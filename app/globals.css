@@ -1,0 +1,1064 @@
+@import "tailwindcss";
+
+/*
+ * Design tokens (BRIEFING seção 4).
+ * Tailwind 4 configura o tema aqui no CSS, no lugar do antigo tailwind.config.ts.
+ * Cada token vira classe: bg-brand, text-ink, rounded-card, shadow-card, max-w-site...
+ */
+@theme {
+  --color-brand: #2e4686;
+  --color-navy: #1c2f5c;
+  --color-ink: #1e2a46;
+  --color-muted: #5b6785;
+  --color-tint: #eef2fb;
+  --color-line: #dce3f2;
+  --color-amber: #f5b800;
+  --color-whatsapp: #25d366;
+  /* Azul da marca clareado, só para texto de apoio sobre navy (contraste 6,3:1). */
+  --color-brand-light: #a9bbea;
+
+  --font-sans: var(--font-manrope), ui-sans-serif, system-ui, sans-serif;
+
+  /* Só três raios no site inteiro. */
+  --radius-btn: 12px;
+  --radius-card: 16px;
+  --radius-photo: 24px;
+
+  /* Só uma sombra, e só em cards clicáveis. */
+  --shadow-card: 0 4px 16px rgb(28 47 92 / 0.06);
+
+  --container-site: 1200px;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Tipografia (Manrope) ---------- */
+
+@utility text-display {
+  font-size: 34px;
+  line-height: 40px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  @media (width >= 64rem) {
+    font-size: 60px;
+    line-height: 66px;
+    letter-spacing: -0.03em;
+  }
+}
+
+@utility text-h2 {
+  font-size: 26px;
+  line-height: 32px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  @media (width >= 64rem) {
+    font-size: 40px;
+    line-height: 48px;
+  }
+}
+
+@utility text-h3 {
+  font-size: 18px;
+  line-height: 24px;
+  font-weight: 700;
+}
+
+@utility text-body-lg {
+  font-size: 16px;
+  line-height: 24px;
+  @media (width >= 64rem) {
+    font-size: 18px;
+    line-height: 28px;
+  }
+}
+
+@utility text-body {
+  font-size: 16px;
+  line-height: 24px;
+}
+
+@utility text-small {
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+@utility text-eyebrow {
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* Espaçamento vertical entre seções: 40px no celular, 96px no desktop. */
+@utility section-y {
+  padding-block: 40px;
+  @media (width >= 64rem) {
+    padding-block: 96px;
+  }
+}
+
+@utility container-site {
+  width: 100%;
+  max-width: var(--container-site);
+  margin-inline: auto;
+  padding-inline: 16px;
+  @media (width >= 48rem) {
+    padding-inline: 24px;
+  }
+}
+
+/* ---------- Base ---------- */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    /* O topo fixo não cobre o título quando se navega por âncora. */
+    scroll-padding-top: 80px;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  /* No desktop o topo fixo tem 85 px. */
+  @media (width >= 64rem) {
+    html {
+      scroll-padding-top: 104px;
+    }
+  }
+
+  body {
+    background: #fff;
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 24px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /*
+   * O Tailwind 4 deixa o cursor dos botões como seta. Aqui tudo que se clica ganha a mãozinha:
+   * botões, links, caixas e opções de escolha, listas suspensas e os rótulos que ligam a eles.
+   */
+  button:not(:disabled),
+  [role="button"]:not([aria-disabled="true"]),
+  a[href],
+  summary,
+  select:not(:disabled),
+  input[type="checkbox"]:not(:disabled),
+  input[type="radio"]:not(:disabled),
+  input[type="submit"]:not(:disabled),
+  label:has(input[type="checkbox"]:not(:disabled)),
+  label:has(input[type="radio"]:not(:disabled)) {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  input:disabled,
+  [aria-disabled="true"] {
+    cursor: not-allowed;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-brand);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .on-dark :focus-visible {
+    outline-color: #fff;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------- Reveal: seções aparecem ao rolar ---------- */
+
+/*
+ * O próprio componente marca data-reveal="pending" só nos blocos que ainda estão fora da
+ * tela depois da hidratação. Sem JavaScript nada é escondido, e nada atrasa o hero.
+ */
+.reveal[data-reveal] {
+  transition:
+    opacity 500ms var(--ease-out-soft),
+    transform 600ms var(--ease-out-soft);
+}
+
+.reveal[data-reveal="pending"] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.reveal[data-reveal="visible"] {
+  opacity: 1;
+  transform: none;
+}
+
+/*
+ * Foto que "assenta": dentro de um bloco que está aparecendo, a foto começa 6% maior e volta
+ * ao tamanho normal devagar. Fica num <span> em volta da imagem, para não brigar com o zoom
+ * de 3% do hover, que está na própria <img>.
+ */
+.foto-assenta {
+  transition: transform 1400ms var(--ease-out-soft);
+}
+
+.reveal[data-reveal="pending"] .foto-assenta {
+  transform: scale(1.06);
+}
+
+/* Foto (ou mapa) que se abre de dentro para fora, com os cantos já arredondados. */
+.foto-revela.reveal[data-reveal] {
+  transition:
+    opacity 500ms var(--ease-out-soft),
+    transform 700ms var(--ease-out-soft),
+    clip-path 1100ms var(--ease-out-soft);
+}
+
+.foto-revela.reveal[data-reveal="pending"] {
+  clip-path: inset(6% 6% 6% 6% round 24px);
+}
+
+.foto-revela.reveal[data-reveal="visible"] {
+  clip-path: inset(0 0 0 0 round 24px);
+}
+
+.foto-revela.reveal[data-reveal="pending"] img {
+  transform: scale(1.08);
+}
+
+.foto-revela img {
+  transition: transform 1400ms var(--ease-out-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal[data-reveal],
+  .foto-revela.reveal[data-reveal] {
+    opacity: 1;
+    transform: none;
+    clip-path: none;
+    transition: none;
+  }
+  .foto-assenta,
+  .foto-revela img {
+    transform: none !important;
+    transition: none;
+  }
+}
+
+/* ---------- Entrada do hero (só transform: não atrasa o LCP) ---------- */
+
+.hero-foto {
+  animation: hero-foto 900ms var(--ease-out-soft) both;
+}
+
+.hero-texto > * {
+  animation: hero-texto 600ms var(--ease-out-soft) both;
+}
+
+.hero-texto > :nth-child(2) {
+  animation-delay: 80ms;
+}
+.hero-texto > :nth-child(3) {
+  animation-delay: 160ms;
+}
+.hero-texto > :nth-child(4) {
+  animation-delay: 240ms;
+}
+
+@keyframes hero-foto {
+  from {
+    transform: scale(1.03) translateY(8px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@keyframes hero-texto {
+  from {
+    transform: translateY(12px);
+  }
+  to {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-foto,
+  .hero-texto > * {
+    animation: none;
+  }
+}
+
+/* ---------- Elipse do hero (assinatura da marca) ---------- */
+
+.hero-ellipse path {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ellipse-draw 1.8s var(--ease-out-soft) 0.2s forwards;
+}
+
+.hero-ellipse path + path {
+  animation-delay: 0.45s;
+  animation-duration: 2s;
+}
+
+@keyframes ellipse-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-ellipse path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---------- Carrossel de marcas ---------- */
+
+.marquee {
+  /* Logos surgem e somem suavemente nas bordas. */
+  mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 10%, #000 90%, transparent);
+}
+
+/* Logos nas cores originais e sem pausa (pedido do cliente: o carrossel é só um detalhe). */
+.marquee-track {
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee {
+    overflow-x: auto;
+    mask-image: none;
+    -webkit-mask-image: none;
+    padding-bottom: 8px;
+  }
+  .marquee-track {
+    animation: none;
+  }
+  /* Sem animação não precisa da segunda cópia. */
+  .marquee-copia[aria-hidden="true"] {
+    display: none;
+  }
+}
+
+/* ---------- Perguntas frequentes ---------- */
+
+.faq-resposta {
+  grid-template-rows: 0fr;
+}
+
+.faq-resposta[data-aberta="true"] {
+  grid-template-rows: 1fr;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .faq-resposta {
+    transition: none;
+  }
+}
+
+/* ---------- WhatsApp flutuante ---------- */
+
+.fab {
+  opacity: 0;
+  transform: translateY(16px) scale(0.92);
+  pointer-events: none;
+  transition:
+    opacity 300ms var(--ease-out-soft),
+    transform 300ms var(--ease-out-soft),
+    background-color 200ms ease-out;
+}
+
+.fab[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+
+/* O hover/active por cima do estado visível (mesma especificidade, vem depois). */
+.fab[data-visible="true"]:hover {
+  transform: scale(1.05);
+}
+.fab[data-visible="true"]:active {
+  transform: scale(0.95);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fab {
+    transition: none;
+  }
+}
+
+/* ---------- Catálogo: lista de ordenação e seções de filtro ---------- */
+
+.menu-ordenar {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px) scale(0.98);
+  transform-origin: top;
+  transition:
+    opacity 160ms ease-out,
+    transform 200ms var(--ease-out-soft),
+    visibility 0s linear 200ms;
+}
+
+.menu-ordenar[data-aberto="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 160ms ease-out,
+    transform 200ms var(--ease-out-soft);
+}
+
+/* Seção de filtro que abre e fecha com altura animada (grid 1fr ↔ 0fr, controlado por data-open). */
+.filtro-corpo {
+  display: grid;
+  grid-template-rows: 1fr;
+  transition: grid-template-rows 300ms var(--ease-out-soft);
+}
+
+.filtro-secao[data-open="false"] .filtro-corpo {
+  grid-template-rows: 0fr;
+}
+
+/* O conteúdo do bloco também some e volta com um deslize curto, junto da altura. */
+.filtro-corpo > div > div {
+  transition:
+    opacity 220ms ease-out,
+    transform 300ms var(--ease-out-soft);
+}
+
+.filtro-secao[data-open="false"] .filtro-corpo > div > div {
+  opacity: 0;
+  transform: translateY(-6px);
+}
+
+/* Chip ou atalho de filtro que acaba de aparecer: cresce de 85% com um fade. */
+.chip-entra {
+  animation: chip 320ms var(--ease-out-soft) backwards;
+}
+
+@keyframes chip {
+  0% { transform: scale(0.85); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+/* Cards do catálogo sobem em fila (só transform, para não atrasar a primeira pintura). */
+.card-entra {
+  animation: card 480ms var(--ease-out-soft) backwards;
+  animation-delay: calc(min(var(--i, 0), 11) * 35ms);
+}
+
+@keyframes card {
+  0% { transform: translateY(14px) scale(0.985); }
+  100% { transform: none; }
+}
+
+/*
+ * Carrossel do alto de /produtos: no destaque que está na tela, o texto sobe em fila e as fotos da
+ * colagem (ou a capa) aparecem uma a uma.
+ */
+/* Troca de destaque: o que sai some com fade e o que entra aparece por cima, sem pulo. */
+.vitrine-slide {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 900ms var(--ease-out-soft),
+    visibility 0s linear 900ms;
+}
+
+.vitrine-slide[data-ativo="true"] {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+  transition:
+    opacity 900ms var(--ease-out-soft),
+    visibility 0s;
+}
+
+/* A capa chega um pouco maior e deslocada, e assenta devagar no lugar. */
+.vitrine-capa {
+  transform: scale(1.05) translateX(1.5%);
+  transition: transform 1800ms var(--ease-out-soft);
+}
+
+.vitrine-slide[data-ativo="true"] .vitrine-capa {
+  transform: none;
+}
+
+.vitrine-slide[data-ativo="true"] .vitrine-texto > * {
+  animation: vitrine-texto 700ms var(--ease-out-soft) backwards;
+  animation-delay: 160ms;
+}
+.vitrine-slide[data-ativo="true"] .vitrine-texto > :nth-child(2) { animation-delay: 230ms; }
+.vitrine-slide[data-ativo="true"] .vitrine-texto > :nth-child(3) { animation-delay: 300ms; }
+.vitrine-slide[data-ativo="true"] .vitrine-texto > :nth-child(4) { animation-delay: 370ms; }
+.vitrine-slide[data-ativo="true"] .vitrine-texto > :nth-child(5) { animation-delay: 440ms; }
+
+.vitrine-slide[data-ativo="true"] .vitrine-tile {
+  animation: vitrine-tile 560ms var(--ease-out-soft) backwards;
+  animation-delay: calc(var(--i, 0) * 70ms + 80ms);
+}
+
+@keyframes vitrine-texto {
+  0% { transform: translateY(12px); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+@keyframes vitrine-tile {
+  0% { transform: scale(0.9); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vitrine-slide[data-ativo="true"] .vitrine-texto > *,
+  .vitrine-slide[data-ativo="true"] .vitrine-tile {
+    animation: none;
+  }
+  .vitrine-slide,
+  .vitrine-slide[data-ativo="true"] {
+    transition: none;
+  }
+  .vitrine-capa {
+    transform: none;
+    transition: none;
+  }
+}
+
+/* Resultado do catálogo: enquanto o novo filtro carrega, o antigo esmaece e uma barra corre no topo. */
+.resultado-entra {
+  transition: opacity 220ms ease-out 60ms;
+}
+
+.resultado-entra[data-pendente="true"] {
+  opacity: 0.45;
+}
+
+.barra-carregando {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  height: 3px;
+  width: 0;
+  border-radius: 9999px;
+  background: var(--color-brand);
+  opacity: 0;
+  transition: opacity 150ms ease-out;
+}
+
+.barra-carregando[data-ativa="true"] {
+  opacity: 1;
+  animation: barra 2.4s cubic-bezier(0.1, 0.6, 0.2, 1) forwards;
+}
+
+@keyframes barra {
+  0% { width: 0; }
+  100% { width: 88%; }
+}
+
+/* Topo com foto na metade direita: a foto nasce do navy por uma máscara longa, entra deslizando e respira devagar. */
+@media (width >= 64rem) {
+  .foto-lado {
+    mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgb(0 0 0 / 0.12) 10%,
+      rgb(0 0 0 / 0.4) 22%,
+      rgb(0 0 0 / 0.75) 38%,
+      #000 58%
+    );
+    -webkit-mask-image: linear-gradient(
+      to right,
+      transparent 0%,
+      rgb(0 0 0 / 0.12) 10%,
+      rgb(0 0 0 / 0.4) 22%,
+      rgb(0 0 0 / 0.75) 38%,
+      #000 58%
+    );
+  }
+}
+
+.foto-lado {
+  animation: foto-lado 1400ms var(--ease-out-soft) both;
+}
+
+@keyframes foto-lado {
+  0% { transform: translateX(48px) scale(1.05); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+.foto-respira {
+  animation: respira 22s ease-in-out 1.4s infinite alternate;
+}
+
+@keyframes respira {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.06); }
+}
+
+/* Cartão com uma barra no topo que cresce quando ele aparece e abre toda no hover. */
+.barra-topo {
+  position: relative;
+  overflow: hidden;
+}
+
+.barra-topo::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: var(--color-brand);
+  transform-origin: left;
+  transform: scaleX(0.22);
+  transition: transform 700ms var(--ease-out-soft) 300ms;
+}
+
+.barra-topo[data-reveal="pending"]::before {
+  transform: scaleX(0);
+}
+
+.barra-topo:hover::before {
+  transform: scaleX(1);
+  transition-delay: 0ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .foto-lado,
+  .foto-respira {
+    animation: none;
+  }
+  .barra-topo::before {
+    transition: none;
+  }
+}
+
+/*
+ * No desktop, o aviso de cookies e o botão do WhatsApp acompanham as margens do conteúdo do site
+ * (container de 1200 px com 24 px de respiro), em vez de ficarem soltos nos cantos da janela.
+ */
+@media (width >= 64rem) {
+  .alinha-esquerda {
+    left: max(1.5rem, calc((100% - 1200px) / 2 + 24px)) !important;
+  }
+  .alinha-direita {
+    right: max(1.5rem, calc((100% - 1200px) / 2 + 24px)) !important;
+  }
+  /* Aviso de cookies no canto direito (o texto e os botões do topo ficam à esquerda), deixando a vaga do botão do WhatsApp. */
+  .cookie-direita {
+    left: auto !important;
+    right: max(6.5rem, calc(50% - 576px + 5rem)) !important;
+  }
+}
+
+/* Lista de sugestões da busca: desce com um fade curto. */
+.sugestoes-busca {
+  animation: sugestoes 180ms var(--ease-out-soft);
+  transform-origin: top;
+}
+
+@keyframes sugestoes {
+  0% { transform: translateY(-6px) scale(0.99); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sugestoes-busca {
+    animation: none;
+  }
+}
+
+/* Aviso de cookies: sobe de baixo e fica acima do botão do WhatsApp. */
+.cookie-aviso {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(24px);
+  transition:
+    opacity 250ms ease-out,
+    transform 400ms var(--ease-out-soft),
+    visibility 0s linear 400ms;
+}
+
+.cookie-aviso[data-aberto="true"] {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity 250ms ease-out,
+    transform 400ms var(--ease-out-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cookie-aviso {
+    transition: none !important;
+  }
+}
+
+/* Barra de compra fixa da página do produto (celular): sobe quando o bloco de compra sai da tela. */
+.barra-compra {
+  transform: translateY(100%);
+  visibility: hidden;
+  transition:
+    transform 320ms var(--ease-out-soft),
+    visibility 0s linear 320ms;
+}
+
+.barra-compra[data-visivel="true"] {
+  transform: none;
+  visibility: visible;
+  transition: transform 320ms var(--ease-out-soft);
+}
+
+/* O botão do WhatsApp sobe para não ficar por cima da barra. */
+@media (width < 64rem) {
+  body:has(.barra-compra[data-visivel="true"]) .fab {
+    bottom: 5.25rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barra-compra {
+    transition: none !important;
+  }
+}
+
+/* Gaveta de filtros (celular): os blocos entram em fila quando ela abre. */
+.gaveta[data-open="true"] .filtro-secao {
+  animation: item-entra 420ms var(--ease-out-soft) backwards;
+}
+.gaveta[data-open="true"] .filtro-secao:nth-child(1) { animation-delay: 120ms; }
+.gaveta[data-open="true"] .filtro-secao:nth-child(2) { animation-delay: 180ms; }
+.gaveta[data-open="true"] .filtro-secao:nth-child(3) { animation-delay: 240ms; }
+.gaveta[data-open="true"] .filtro-secao:nth-child(4) { animation-delay: 300ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-ordenar,
+  .filtro-corpo,
+  .filtro-corpo > div > div,
+  .resultado-entra {
+    transition: none !important;
+  }
+  .chip-entra,
+  .card-entra,
+  .barra-carregando,
+  .gaveta[data-open="true"] .filtro-secao {
+    animation: none !important;
+  }
+}
+
+/* ---------- Coração dos favoritos e modal de cadastro ---------- */
+
+.coracao-pulsa {
+  animation: coracao 420ms var(--ease-out-soft);
+}
+
+@keyframes coracao {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.contador-pula {
+  animation: contador 360ms var(--ease-out-soft);
+}
+
+@keyframes contador {
+  0% { transform: scale(0.6); }
+  60% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+.modal-fundo {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 200ms ease-out, visibility 0s linear 200ms;
+}
+
+.modal-fundo[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 200ms ease-out;
+}
+
+.modal-caixa {
+  opacity: 0;
+  transform: translateY(16px) scale(0.98);
+  transition: opacity 200ms ease-out, transform 300ms var(--ease-out-soft);
+}
+
+[data-open="true"] > .modal-caixa {
+  opacity: 1;
+  transform: none;
+}
+
+/* Anel que se abre quando o coração é marcado. */
+.coracao-anel {
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  border: 2px solid #e0245e;
+  pointer-events: none;
+  animation: anel 400ms var(--ease-out-soft) forwards;
+}
+
+@keyframes anel {
+  0% { transform: scale(0.7); opacity: 0.7; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* Coração que murcha ao ser desmarcado. */
+.coracao-solta {
+  animation: solta 260ms ease-out;
+}
+
+@keyframes solta {
+  0% { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+/* Contador do botão do carrinho: o número troca com uma subida curta. */
+.numero-troca {
+  display: inline-block;
+  animation: numero 260ms var(--ease-out-soft);
+}
+
+@keyframes numero {
+  0% { transform: translateY(40%); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+/* "Adicionar" vira o seletor de quantidade: o seletor cresce a partir do centro. */
+.seletor-entra {
+  animation: seletor 280ms var(--ease-out-soft);
+}
+
+@keyframes seletor {
+  0% { transform: scaleX(0.82); opacity: 0.2; }
+  100% { transform: none; opacity: 1; }
+}
+
+/* Ícone do carrinho no topo balança quando entra um item. */
+.carrinho-balanca {
+  animation: balanca 520ms var(--ease-out-soft);
+  transform-origin: 50% 80%;
+}
+
+@keyframes balanca {
+  0% { transform: rotate(0); }
+  25% { transform: rotate(-14deg) scale(1.1); }
+  55% { transform: rotate(9deg) scale(1.1); }
+  100% { transform: none; }
+}
+
+/* Bolinha que voa do botão até o carrinho (criada por src/lib/animacoes.ts). */
+.bolinha-voo {
+  position: fixed;
+  z-index: 70;
+  top: 0;
+  left: 0;
+  width: 14px;
+  height: 14px;
+  margin: -7px 0 0 -7px;
+  border-radius: 9999px;
+  background: var(--color-brand);
+  box-shadow: 0 0 0 3px rgb(46 70 134 / 0.25);
+  pointer-events: none;
+}
+
+/* Itens de lista (carrinho e favoritos): entram em fila, saem com um recuo curto. */
+.lista-item {
+  animation: item-entra 420ms var(--ease-out-soft) backwards;
+  animation-delay: calc(min(var(--i, 0), 8) * 45ms);
+  transition:
+    opacity 240ms ease-out,
+    transform 280ms var(--ease-out-soft);
+}
+
+.lista-item[data-saindo="true"] {
+  opacity: 0;
+  transform: translateX(-18px) scale(0.97);
+  pointer-events: none;
+}
+
+@keyframes item-entra {
+  0% { transform: translateY(12px); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+/* Estado vazio: o ícone flutua devagar. */
+.flutua {
+  animation: flutua 3.2s ease-in-out infinite;
+}
+
+@keyframes flutua {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-5px); }
+}
+
+/* Mensagem de erro de campo entra deslizando; o campo treme uma vez. */
+.erro-campo {
+  animation: erro 240ms var(--ease-out-soft);
+}
+
+@keyframes erro {
+  0% { transform: translateY(-4px); opacity: 0; }
+  100% { transform: none; opacity: 1; }
+}
+
+.campo-treme {
+  animation: treme 320ms ease-out;
+}
+
+@keyframes treme {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-5px); }
+  45% { transform: translateX(4px); }
+  70% { transform: translateX(-2px); }
+}
+
+/* Ponto de "aberto agora": um anel que pulsa. */
+.ponto-aberto::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: inherit;
+  animation: ponto 2s ease-out infinite;
+}
+
+@keyframes ponto {
+  0% { transform: scale(1); opacity: 0.6; }
+  80%, 100% { transform: scale(2.6); opacity: 0; }
+}
+
+/* Link com sublinhado que cresce da esquerda. */
+.sublinha {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0 1.5px;
+  transition: background-size 300ms var(--ease-out-soft);
+}
+
+.sublinha:hover,
+.sublinha:focus-visible {
+  background-size: 100% 1.5px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .coracao-pulsa,
+  .contador-pula,
+  .coracao-anel,
+  .coracao-solta,
+  .numero-troca,
+  .seletor-entra,
+  .carrinho-balanca,
+  .lista-item,
+  .flutua,
+  .erro-campo,
+  .campo-treme,
+  .ponto-aberto::after {
+    animation: none;
+  }
+  .lista-item {
+    transition: none;
+  }
+  .modal-fundo, .modal-caixa { transition: none !important; }
+  .sublinha { transition: none; }
+}
+
+/* ---------- Gaveta de filtros do catálogo (celular) ---------- */
+
+.gaveta-fundo {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 250ms ease-out,
+    visibility 0s linear 250ms;
+}
+
+.gaveta-fundo[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 250ms ease-out;
+}
+
+.gaveta {
+  transform: translateY(100%);
+  visibility: hidden;
+  transition:
+    transform 350ms var(--ease-out-soft),
+    visibility 0s linear 350ms;
+}
+
+.gaveta[data-open="true"] {
+  transform: none;
+  visibility: visible;
+  transition: transform 350ms var(--ease-out-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gaveta,
+  .gaveta-fundo {
+    transition: none !important;
+  }
+}
+
+/* ---------- Menu do celular ---------- */
+
+.mobile-menu {
+  opacity: 0;
+  visibility: hidden;
+  transition:
+    opacity 250ms ease-out,
+    visibility 0s linear 250ms;
+}
+
+.mobile-menu[data-open="true"] {
+  opacity: 1;
+  visibility: visible;
+  transition:
+    opacity 250ms ease-out,
+    visibility 0s;
+}
+
+.mobile-menu .menu-item {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 300ms ease-out,
+    transform 300ms ease-out;
+}
+
+.mobile-menu[data-open="true"] .menu-item {
+  opacity: 1;
+  transform: none;
+  transition-delay: calc(60ms + var(--i, 0) * 35ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mobile-menu,
+  .mobile-menu .menu-item {
+    transition: none !important;
+    transform: none;
+  }
+}

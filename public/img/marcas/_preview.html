@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Conferência dos logos</title>
+<style>
+  :root { --ink:#1e2a46; --muted:#5b6785; --line:#dce3f2; --tint:#eef2fb; }
+  * { box-sizing: border-box; }
+  body { margin: 0; padding: 32px 16px 64px; font: 16px/24px system-ui, sans-serif; color: var(--ink); background: #fff; }
+  main { max-width: 1200px; margin: 0 auto; }
+  h1 { font-size: 26px; line-height: 32px; margin: 0 0 4px; }
+  h2 { font-size: 18px; margin: 40px 0 12px; }
+  p { color: var(--muted); margin: 0; }
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: 48px; padding: 24px; border: 1px solid var(--line); border-radius: 16px; }
+  .row.h40 img { height: 40px; width: auto; }
+  .row.gray img { filter: grayscale(1); opacity: .6; transition: filter .2s, opacity .2s; }
+  .row.gray img:hover { filter: none; opacity: 1; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; }
+  figure { margin: 0; border: 1px solid var(--line); border-radius: 16px; overflow: hidden; }
+  figure .box { height: 248px; display: grid; place-items: center; padding: 24px;
+    background-image: conic-gradient(#f3f5fa 25%, #fff 0 50%, #f3f5fa 0 75%, #fff 0); background-size: 16px 16px; }
+  figure img { height: 200px; width: auto; max-width: 100%; object-fit: contain; outline: 1px dashed #c7d0e6; }
+  figcaption { padding: 10px 16px; font-size: 14px; color: var(--muted); border-top: 1px solid var(--line); }
+</style>
+</head>
+<body>
+<main>
+  <h1>Conferência dos logos das marcas</h1>
+  <p>Todos em SVG. A linha tracejada mostra o limite do arquivo, para conferir se não sobrou margem.</p>
+
+  <h2>40 px de altura (tamanho do carrossel)</h2>
+  <div class="row h40">
+    <img src="lenovo.svg" alt="Lenovo"><img src="dell.svg" alt="Dell"><img src="hp.svg" alt="HP"><img src="intelbras.svg" alt="Intelbras"><img src="epson.svg" alt="Epson"><img src="logitech.svg" alt="Logitech"><img src="tp-link.svg" alt="TP-Link">
+  </div>
+
+  <h2>40 px em cinza, como no carrossel (passe o mouse para ver a cor)</h2>
+  <div class="row h40 gray">
+    <img src="lenovo.svg" alt="Lenovo"><img src="dell.svg" alt="Dell"><img src="hp.svg" alt="HP"><img src="intelbras.svg" alt="Intelbras"><img src="epson.svg" alt="Epson"><img src="logitech.svg" alt="Logitech"><img src="tp-link.svg" alt="TP-Link">
+  </div>
+
+  <h2>200 px de altura (nitidez)</h2>
+  <div class="grid">
+    <figure><div class="box"><img src="lenovo.svg" alt="Lenovo"></div><figcaption>lenovo.svg</figcaption></figure>
+    <figure><div class="box"><img src="dell.svg" alt="Dell"></div><figcaption>dell.svg</figcaption></figure>
+    <figure><div class="box"><img src="hp.svg" alt="HP"></div><figcaption>hp.svg</figcaption></figure>
+    <figure><div class="box"><img src="intelbras.svg" alt="Intelbras"></div><figcaption>intelbras.svg</figcaption></figure>
+    <figure><div class="box"><img src="epson.svg" alt="Epson"></div><figcaption>epson.svg</figcaption></figure>
+    <figure><div class="box"><img src="logitech.svg" alt="Logitech"></div><figcaption>logitech.svg</figcaption></figure>
+    <figure><div class="box"><img src="tp-link.svg" alt="TP-Link"></div><figcaption>tp-link.svg</figcaption></figure>
+  </div>
+</main>
+</body>
+</html>
