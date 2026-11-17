@@ -10,9 +10,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * (a capa dá um leve zoom-out e o texto sobe em fila). Passa sozinho; também troca pelas setas e
  * deslizando o dedo para o lado.
  *
- * Cada destaque usa uma CAPA (imagem de fundo) quando o arquivo existe em public/img/vitrine/
- * (capa-empresas, capa-pessoa-fisica, capa-como-funciona, em .jpg, .webp ou .png). Sem a capa, mostra
- * uma colagem de fotos de produtos. O texto é sempre HTML (editável, lido por leitor de tela e pelo Google).
+ * Cada destaque usa uma CAPA (imagem de fundo, em public/img/vitrine/) recebida em `capas`, pelo id do
+ * destaque (a lista fica em Catalogo.tsx). Sem a capa, mostra uma colagem de fotos de produtos. O texto é sempre HTML (editável, lido por leitor de tela e pelo Google).
  * Só usa o que o site já afirma em outras páginas (cartão em até 3x sem juros, retirada em Itatiba,
  * frete e prazos a combinar com o vendedor).
  */

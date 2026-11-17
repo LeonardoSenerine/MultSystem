@@ -1,5 +1,3 @@
-import { existsSync } from "node:fs";
-import { join } from "node:path";
 import Link from "next/link";
 import { X } from "lucide-react";
 import { EventoNaTela } from "@/components/analytics/EventoNaTela";
@@ -24,23 +22,17 @@ import type { ProdutoCatalogo } from "@/types";
 type Params = Record<string, string | string[] | undefined>;
 
 /**
- * Capas do banner no alto de /produtos: basta colocar o arquivo em public/img/vitrine/ com o nome
- * capa-empresas, capa-pessoa-fisica ou capa-como-funciona (.jpg, .webp ou .png). Sem arquivo, o banner
- * mostra a colagem de fotos de produtos.
+ * Capas do banner no alto de /produtos (arquivos em public/img/vitrine/). Para trocar uma capa, substitua o
+ * arquivo mantendo o nome. Se um destaque ficar fora desta lista, o banner mostra no lugar dele uma colagem
+ * de fotos de produtos.
+ * (Antes o site procurava os arquivos no disco em tempo de execução, o que não funciona na Vercel: lá a
+ * pasta public/ não existe para o código do servidor e as capas nunca apareceriam.)
  */
-function capasDaVitrine(): Record<string, string> {
-  const capas: Record<string, string> = {};
-  for (const id of ["empresas", "pessoa-fisica", "como-funciona"]) {
-    for (const ext of ["jpg", "webp", "png"]) {
-      const arquivo = `capa-${id}.${ext}`;
-      if (existsSync(join(process.cwd(), "public", "img", "vitrine", arquivo))) {
-        capas[id] = `/img/vitrine/${arquivo}`;
-        break;
-      }
-    }
-  }
-  return capas;
-}
+const CAPAS_DA_VITRINE: Record<string, string> = {
+  empresas: "/img/vitrine/capa-empresas.jpg",
+  "pessoa-fisica": "/img/vitrine/capa-pessoa-fisica.jpg",
+  "como-funciona": "/img/vitrine/capa-como-funciona.jpg",
+};
 
 function chips(f: Filtros) {
   const lista: { nome: string; href: string }[] = [];
@@ -113,7 +105,7 @@ export async function Catalogo({ searchParams, departamento = "" }: { searchPara
       {/* Carrossel de apresentação: só na página de produtos limpa (sem departamento, busca ou filtro) e na 1ª página. */}
       {!depto && aplicados.length === 0 && resultado.pagina === 1 && (
         <div className="mt-2 mb-5 lg:mb-8">
-          <VitrineProdutos capas={capasDaVitrine()} />
+          <VitrineProdutos capas={CAPAS_DA_VITRINE} />
         </div>
       )}
 
