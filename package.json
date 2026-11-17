@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "fotos": "node scripts/atualizar-sem-foto.mjs",
+    "prebuild": "node scripts/atualizar-sem-foto.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

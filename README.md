@@ -33,7 +33,7 @@ Quando a busca do catálogo não acha nada, a página mostra "Não encontramos�
 - As 64 categorias do sistema da loja foram agrupadas em 11 departamentos, com nomes legíveis, em `src/data/departamentos.ts`. Categoria nova que aparecer na API cai em "Outros".
 - O sistema não tem campo de marca: ela é reconhecida no nome do produto pela lista de `src/data/marcas-catalogo.ts`.
 - Os nomes vêm todos em maiúsculas e são reescritos para leitura ("TECLADO USB STD SKL106 PT FORTREK" vira "Teclado USB Std SKL106 PT", com a marca mostrada à parte).
-- Cerca de 40% das fotos do catálogo não existem (a URL devolve uma página no lugar da imagem). O site confere isso uma vez por dia e mostra "Foto em breve"; esses produtos vão para o fim da ordem "Mais relevantes".
+- Cerca de 4% das fotos do catálogo não existem (a URL devolve uma página no lugar da imagem). O script `scripts/atualizar-sem-foto.mjs` confere isso a cada publicação (`npm run build`; manual: `npm run fotos`, ou `npm run fotos -- --tudo` para conferir tudo de novo) e grava `src/data/sem-foto.json`; o site só lê o arquivo e mostra "Foto em breve", e esses produtos vão para o fim da ordem "Mais relevantes". O servidor das fotos devolve 429 se receber pedidos em rajada, por isso a conferência anda em ritmo contínuo e é incremental.
 
 ## Vendas: funil, BotConversa, sugestões e compra recorrente
 

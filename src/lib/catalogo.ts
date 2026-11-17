@@ -5,6 +5,7 @@
 import { cacheLife } from "next/cache";
 import { departamentoOutros, departamentos } from "@/data/departamentos";
 import { marcaDoNome } from "@/data/marcas-catalogo";
+import semFotoConferidas from "@/data/sem-foto.json";
 import { formatarNomeProduto, normalizar, slugificar } from "@/lib/formato";
 import type { Departamento, ItemCatalogo, ProdutoCatalogo, Subcategoria } from "@/types";
 
@@ -77,30 +78,15 @@ export async function getCatalogo(): Promise<ItemCatalogo[]> {
 }
 
 /*
- * Cerca de 40% dos produtos não têm foto: a URL responde 200, mas com uma página HTML no
- * lugar da imagem. Conferimos uma vez por dia (pedidos HEAD, em paralelo) para mostrar um
- * espaço "sem foto" bonito e jogar esses produtos para o fim da ordem "Mais relevantes".
+ * Cerca de 4% dos produtos não têm foto: a URL responde 200, mas com uma página HTML no lugar da
+ * imagem. O site mostra um espaço "sem foto" e joga esses produtos para o fim de "Mais relevantes".
+ *
+ * Quem descobre isso é o script scripts/atualizar-sem-foto.mjs, que roda a cada publicação (npm run build)
+ * e grava src/data/sem-foto.json. O site só LÊ esse arquivo. Não pode conferir foto por foto durante a
+ * visita: são ~1.700 pedidos, a página levava 14 s e o WhatsApp desistia de montar a prévia do link.
+ * Produto novo que ainda não está no arquivo conta como "com foto" (o navegador tem um plano B).
  */
-async function getUrlsSemFoto(urls: string[]): Promise<Set<string>> {
-  "use cache";
-  cacheLife("days");
-
-  const semFoto = new Set<string>();
-  const fila = [...new Set(urls.filter(Boolean))];
-  async function trabalhar() {
-    for (let url = fila.pop(); url; url = fila.pop()) {
-      try {
-        const r = await fetch(url, { method: "HEAD", signal: AbortSignal.timeout(5_000) });
-        if (!r.ok || !(r.headers.get("content-type") ?? "").startsWith("image/")) semFoto.add(url);
-      } catch {
-        // Na dúvida, considera que tem foto: o componente da foto ainda tem um plano B no navegador.
-      }
-    }
-  }
-  await Promise.all(Array.from({ length: 24 }, trabalhar));
-  return semFoto;
-}
-
+const SEM_FOTO = new Set<string>(semFotoConferidas.semFoto);
 const porSistema = new Map<string, { departamento: Departamento; sub: Subcategoria }>(
   departamentos.flatMap((d) => d.subcategorias.map((s) => [s.sistema, { departamento: d, sub: s }] as const)),
 );
@@ -125,8 +111,6 @@ export async function getProdutos(): Promise<ProdutoCatalogo[]> {
   if (atual) cacheLife("hours");
   else cacheLife("minutes");
 
-  const semFoto = await getUrlsSemFoto(itens.map((i) => i.imagem));
-
   return itens.map((item) => {
     const marca = marcaDoNome(item.nome);
     const { departamento, sub } = localizarCategoria(item.categoria);
@@ -141,7 +125,7 @@ export async function getProdutos(): Promise<ProdutoCatalogo[]> {
       subcategoria: sub.slug,
       marca: marca?.slug ?? "",
       imagem: item.imagem,
-      temFoto: Boolean(item.imagem) && !semFoto.has(item.imagem),
+      temFoto: Boolean(item.imagem) && !SEM_FOTO.has(item.imagem),
       preco: item.preco,
       precoOriginal: item.precoOriginal,
       estoque: item.estoque,
