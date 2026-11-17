@@ -28,19 +28,27 @@ type ItemApi = {
   estoque?: number;
 };
 
-export async function getCatalogo(): Promise<ItemCatalogo[]> {
+// Última lista que a API entregou com sucesso. Se a API cair numa atualização, o site continua mostrando
+// esta (preços e estoque de poucas horas atrás) em vez de ficar com o catálogo vazio.
+let ultimoCatalogo: ItemCatalogo[] = [];
+
+/**
+ * Lê a API. Quando dá certo, a lista fica em cache por horas. Quando a API falha (fora do ar, lenta ou
+ * devolvendo lista vazia), devolve a última lista boa e guarda isso só por 1 minuto: assim o site volta
+ * a tentar logo, em vez de ficar horas com dados velhos (ou vazios) guardados.
+ */
+export async function lerCatalogo(): Promise<{ itens: ItemCatalogo[]; atual: boolean }> {
   "use cache";
-  cacheLife("hours");
 
   try {
     const resposta = await fetch(CATALOGO_API_URL, {
       headers: { Accept: "application/json" },
-      signal: AbortSignal.timeout(15_000),
+      signal: AbortSignal.timeout(8_000),
     });
     if (!resposta.ok) throw new Error(`HTTP ${resposta.status}`);
     const json = (await resposta.json()) as { data?: ItemApi[] };
 
-    return (json.data ?? [])
+    const itens: ItemCatalogo[] = (json.data ?? [])
       .filter((p) => p.cod_produto && p.nome && (p.preco ?? 0) > 0 && !CATEGORIAS_OCULTAS.has(p.categoria ?? ""))
       .map((p) => ({
         codigo: String(p.cod_produto),
@@ -52,10 +60,20 @@ export async function getCatalogo(): Promise<ItemCatalogo[]> {
         precoOriginal: Number(p.preco_original ?? p.preco),
         estoque: Number(p.estoque ?? 0),
       }));
+    if (itens.length === 0) throw new Error("a API devolveu uma lista vazia");
+
+    ultimoCatalogo = itens;
+    cacheLife("hours");
+    return { itens, atual: true };
   } catch (erro) {
-    console.error("[catalogo] não foi possível ler a API:", erro);
-    return [];
+    console.error("[catalogo] não foi possível ler a API, usando a última lista conhecida:", erro);
+    cacheLife("minutes");
+    return { itens: ultimoCatalogo, atual: false };
   }
+}
+
+export async function getCatalogo(): Promise<ItemCatalogo[]> {
+  return (await lerCatalogo()).itens;
 }
 
 /*
@@ -100,9 +118,13 @@ export function localizarCategoria(sistema: string): { departamento: Departament
 /** Catálogo pronto para o site: nome legível, departamento, marca e se tem foto. */
 export async function getProdutos(): Promise<ProdutoCatalogo[]> {
   "use cache";
-  cacheLife("hours");
 
-  const itens = await getCatalogo();
+  // Quem chama `cacheLife` explicitamente manda no próprio prazo (não herda o do cache de dentro):
+  // se a leitura da API falhou, este resultado também só dura 1 minuto.
+  const { itens, atual } = await lerCatalogo();
+  if (atual) cacheLife("hours");
+  else cacheLife("minutes");
+
   const semFoto = await getUrlsSemFoto(itens.map((i) => i.imagem));
 
   return itens.map((item) => {

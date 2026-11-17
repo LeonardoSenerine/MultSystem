@@ -10,7 +10,7 @@ import { departamentos } from "@/data/departamentos";
 import { contato } from "@/data/contato";
 import { perguntas } from "@/data/faq";
 import { destaques, produtosExemplo } from "@/data/produtos";
-import { getCatalogo } from "@/lib/catalogo";
+import { lerCatalogo } from "@/lib/catalogo";
 import type { Avaliacao, Contato, Departamento, Pergunta, Produto } from "@/types";
 
 export function getContato(): Contato {
@@ -19,9 +19,10 @@ export function getContato(): Contato {
 
 export async function getDestaques(limite = 8): Promise<Produto[]> {
   "use cache";
-  cacheLife("hours");
 
-  const catalogo = await getCatalogo();
+  const { itens: catalogo, atual } = await lerCatalogo();
+  if (atual) cacheLife("hours");
+  else cacheLife("minutes");
   const porCodigo = new Map(catalogo.map((item) => [item.codigo, item]));
 
   const reais: Produto[] = destaques.flatMap((d) => {
