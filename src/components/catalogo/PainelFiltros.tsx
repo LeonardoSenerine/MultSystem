@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, ChevronRight } from "lucide-react";
+import { FormularioFaixaPreco } from "@/components/catalogo/FormularioFaixaPreco";
 import { ListaMarcas } from "@/components/catalogo/ListaMarcas";
 import { SecaoFiltro } from "@/components/catalogo/SecaoFiltro";
 import { departamentoOutros, departamentos } from "@/data/departamentos";
@@ -40,8 +41,6 @@ function Bolinha({ marcada }: { marcada: boolean }) {
   );
 }
 
-const campo =
-  "flex h-11 min-w-0 items-center gap-1.5 rounded-btn border-[1.5px] border-[#cfd8ec] bg-white px-3 transition-[border-color,box-shadow] duration-200 focus-within:border-brand focus-within:ring-4 focus-within:ring-brand/12 hover:border-[#9fb0d6]";
 const pilula =
   "inline-flex min-h-11 items-center rounded-full px-3.5 text-[13px] font-semibold whitespace-nowrap transition-[background-color,color,box-shadow,transform] duration-200 hover:-translate-y-px active:translate-y-0 active:scale-95";
 
@@ -193,55 +192,19 @@ export function PainelFiltros({
             })}
         </ul>
 
-        {/* Faixa livre: formulário GET comum, que mantém os outros filtros em campos ocultos. */}
-        <form action={filtros.departamento ? `/categoria/${filtros.departamento}` : "/produtos"} className="mt-4">
-          <p className="text-[13px] font-semibold text-muted">Ou digite o valor</p>
-          {filtros.q && <input type="hidden" name="q" value={filtros.q} />}
-          {filtros.sub && <input type="hidden" name="sub" value={filtros.sub} />}
-          {filtros.marcas.length > 0 && <input type="hidden" name="marca" value={filtros.marcas.join(",")} />}
-          {filtros.ordem !== "relevancia" && <input type="hidden" name="ordem" value={filtros.ordem} />}
-          {/* Mínimo e máximo lado a lado; o botão fica embaixo, com a largura toda, para nada espremer. */}
-          <div className="mt-2 grid grid-cols-2 gap-2">
-            <label className={campo}>
-              <span aria-hidden className="text-[13px] font-semibold text-muted">
-                R$
-              </span>
-              <input
-                id={`${prefixo}-preco-min`}
-                name="min"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                placeholder="Mínimo"
-                aria-label="Preço mínimo em reais"
-                defaultValue={filtros.min ?? ""}
-                className="w-full min-w-0 bg-transparent text-[14px] font-semibold text-ink placeholder:font-normal placeholder:text-muted focus:outline-none"
-              />
-            </label>
-            <label className={campo}>
-              <span aria-hidden className="text-[13px] font-semibold text-muted">
-                R$
-              </span>
-              <input
-                id={`${prefixo}-preco-max`}
-                name="max"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                placeholder="Máximo"
-                aria-label="Preço máximo em reais"
-                defaultValue={filtros.max ?? ""}
-                className="w-full min-w-0 bg-transparent text-[14px] font-semibold text-ink placeholder:font-normal placeholder:text-muted focus:outline-none"
-              />
-            </label>
-          </div>
-          <button
-            type="submit"
-            className="group/aplicar mt-2 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-btn bg-brand px-4 text-[14px] font-bold text-white transition-[background-color,transform] hover:bg-[#263b73] active:scale-[0.98]"
-          >
-            Aplicar faixa de preço
-            <ArrowRight aria-hidden className="size-4 transition-transform duration-200 group-hover/aplicar:translate-x-0.5" />
-          </button>
-        </form>
-      </SecaoFiltro>
+        {/* Faixa livre: formulário GET comum (funciona sem JavaScript) que, com JavaScript, só troca a lista. */}
+        <FormularioFaixaPreco
+          action={filtros.departamento ? `/categoria/${filtros.departamento}` : "/produtos"}
+          prefixo={prefixo}
+          min={filtros.min}
+          max={filtros.max}
+          ocultos={[
+            ...(filtros.q ? ([["q", filtros.q]] as [string, string][]) : []),
+            ...(filtros.sub ? ([["sub", filtros.sub]] as [string, string][]) : []),
+            ...(filtros.marcas.length > 0 ? ([["marca", filtros.marcas.join(",")]] as [string, string][]) : []),
+            ...(filtros.ordem !== "relevancia" ? ([["ordem", filtros.ordem]] as [string, string][]) : []),
+          ]}
+        />      </SecaoFiltro>
     </div>
   );
 }

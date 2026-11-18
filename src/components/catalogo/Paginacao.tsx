@@ -33,7 +33,7 @@ export function Paginacao({
     <nav aria-label="Páginas" className="mt-10 flex flex-col items-center gap-4 lg:mt-14">
       <div className="flex w-full items-center justify-between gap-2 sm:w-auto sm:justify-center">
         {pagina > 1 ? (
-          <Link href={url(pagina - 1)} className={seta} rel="prev">
+          <Link href={url(pagina - 1)} scroll={false} className={seta} rel="prev">
             <ChevronLeft aria-hidden className="size-4 transition-transform duration-200 group-hover/seta:-translate-x-0.5" />
             <span>Anterior</span>
           </Link>
@@ -55,6 +55,7 @@ export function Paginacao({
               <li key={n}>
                 <Link
                   href={url(n)}
+                  scroll={false}
                   aria-current={n === pagina ? "page" : undefined}
                   aria-label={`Página ${n}`}
                   className={`grid size-11 place-items-center rounded-full text-[14px] font-bold tabular-nums transition-[background-color,color,transform] duration-200 active:scale-90 ${
@@ -72,7 +73,7 @@ export function Paginacao({
         </p>
 
         {pagina < totalPaginas ? (
-          <Link href={url(pagina + 1)} className={seta} rel="next">
+          <Link href={url(pagina + 1)} scroll={false} className={seta} rel="next">
             <span>Próxima</span>
             <ChevronRight aria-hidden className="size-4 transition-transform duration-200 group-hover/seta:translate-x-0.5" />
           </Link>

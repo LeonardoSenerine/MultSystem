@@ -39,7 +39,10 @@ let ultimoCatalogo: ItemCatalogo[] = [];
  * a tentar logo, em vez de ficar horas com dados velhos (ou vazios) guardados.
  */
 export async function lerCatalogo(): Promise<{ itens: ItemCatalogo[]; atual: boolean }> {
-  "use cache";
+  // "remote" = cache compartilhado entre todas as execuções do servidor. Na Vercel o cache comum ("use cache") fica na
+  // memória de UMA execução e some em seguida: cada clique em filtro esperava ~1 s só para buscar o catálogo de novo
+  // na Discloud. Com o compartilhado, a busca na API acontece uma vez por hora para todo mundo.
+  "use cache: remote";
 
   try {
     const resposta = await fetch(CATALOGO_API_URL, {
