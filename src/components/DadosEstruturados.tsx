@@ -24,6 +24,7 @@ export function DadosEstruturados() {
     telephone: `+${contato.telefoneLink.replace(/\D/g, "")}`,
     email: contato.email,
     foundingDate: "1995",
+    taxID: contato.cnpj,
     priceRange: "$$",
     address: {
       "@type": "PostalAddress",

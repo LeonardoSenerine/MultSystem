@@ -23,6 +23,8 @@ export const contato: Contato = {
   telefone: "(11) 4894-8411",
   telefoneLink: "tel:+551148948411",
   email: "vendas@multsystems.com.br",
+  // CNPJ enviado pelo cliente em 18/11/2026 (dígitos verificadores conferidos). TODO: ainda falta a razão social.
+  cnpj: "62.115.431/0001-50",
   horario: "Seg a sex, 8h às 17h30 · Sáb, 9h às 12h",
   cidade: "Itatiba/SP",
   endereco,

@@ -19,6 +19,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { caminho: "/contato", prioridade: 0.6, frequencia: "yearly" },
     { caminho: "/privacidade", prioridade: 0.2, frequencia: "yearly" },
     { caminho: "/cookies", prioridade: 0.2, frequencia: "yearly" },
+    { caminho: "/politica-devolucao", prioridade: 0.3, frequencia: "yearly" },
   ];
 
   const paginas: MetadataRoute.Sitemap = fixas.map((p) => ({

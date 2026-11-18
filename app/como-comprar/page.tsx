@@ -131,6 +131,13 @@ export default function ComoComprarPage() {
           </Reveal>
           <Reveal className="mx-auto mt-6 max-w-3xl lg:mt-10" atraso={100}>
             <Faq perguntas={perguntasCompra} />
+            <p className="mt-6 text-small text-muted">
+              Quer ver as regras de arrependimento, garantia e troca?{" "}
+              <Link href="/politica-devolucao" className="font-bold text-brand hover:underline">
+                Leia a Política de Trocas e Devoluções
+              </Link>
+              .
+            </p>
           </Reveal>
         </div>
       </section>

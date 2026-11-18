@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 
 /*
  * TODO: dado real. Antes de publicar, a Multsystems (com apoio jurídico) precisa:
- *  - informar a razão social e o CNPJ do controlador;
+ *  - informar a razão social do controlador (o CNPJ já consta: 62.115.431/0001-50);
  *  - indicar quem responde pelos dados (encarregado/DPO) e o canal oficial;
  *  - confirmar os prazos de guarda dos dados e os fornecedores realmente usados (BotConversa, Vercel, Google Analytics).
  */
@@ -26,7 +26,7 @@ export default function PrivacidadePage() {
     >
       <h2>Quem somos</h2>
       <p>
-        O site é da <strong>Multsystems</strong>, loja de informática com sede em {contato.endereco}. A Multsystems é a
+        O site é da <strong>Multsystems</strong>, loja de informática com sede em {contato.endereco}. A Multsystems, inscrita no CNPJ {contato.cnpj}, é a
         responsável (controladora) pelos dados tratados neste site. A assistência técnica é prestada pela Total Tech, empresa
         parceira que funciona na mesma loja.
       </p>

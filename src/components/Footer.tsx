@@ -112,11 +112,16 @@ export function Footer() {
 
       <div className="relative border-t border-white/10">
         <div className="container-site flex flex-wrap items-center justify-between gap-x-6 gap-y-1 py-3 text-small text-white/60">
-          <p>© 2026 Multsystems · Itatiba/SP</p>
+          <p>© 2026 Multsystems · CNPJ {contato.cnpj} · Itatiba/SP</p>
           <ul className="flex flex-wrap items-center gap-x-5">
             <li>
               <Link href="/privacidade" className={baixo}>
                 Política de Privacidade
+              </Link>
+            </li>
+            <li>
+              <Link href="/politica-devolucao" className={baixo}>
+                Trocas e devoluções
               </Link>
             </li>
             <li>

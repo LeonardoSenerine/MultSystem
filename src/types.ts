@@ -5,6 +5,8 @@ export type Contato = {
   telefone: string;
   telefoneLink: string;
   email: string;
+  /** CNPJ da Multsystems, já formatado (00.000.000/0000-00). */
+  cnpj: string;
   horario: string;
   cidade: string;
   endereco: string;
