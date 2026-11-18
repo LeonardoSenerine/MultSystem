@@ -99,16 +99,27 @@ export async function Catalogo({ searchParams, departamento = "" }: { searchPara
   const local = depto ? `em ${(sub?.nome ?? depto.nome).toLowerCase()}` : undefined;
 
   return (
-    <div data-catalogo-raiz className="container-site pt-4 pb-16 lg:pt-6 lg:pb-24">
-      <Migalhas itens={migalhas} />
+    <div data-catalogo-raiz>
+      <div className="container-site pt-4 lg:pt-6">
+        <Migalhas itens={migalhas} />
+      </div>
 
-      {/* Carrossel de apresentação: só na página de produtos limpa (sem departamento, busca ou filtro) e na 1ª página. */}
+      {/* Banner de apresentação: só na página de produtos limpa (sem departamento, busca ou filtro) e na 1ª página.
+          Ocupa a largura da tela, sem borda: a faixa tem a mesma cor do fundo das capas e esmaece para a cor da
+          página no alto e embaixo, então o banner parece fazer parte da tela. */}
       {!depto && aplicados.length === 0 && resultado.pagina === 1 && (
-        <div className="mt-2 mb-5 lg:mb-8">
-          <VitrineProdutos capas={CAPAS_DA_VITRINE} />
-        </div>
+        <>
+          <div aria-hidden className="mt-2 h-5 bg-gradient-to-b from-tint to-[#ebf0f6] lg:h-8" />
+          <div className="bg-[#ebf0f6]">
+            <div className="mx-auto max-w-(--container-site)">
+              <VitrineProdutos capas={CAPAS_DA_VITRINE} />
+            </div>
+          </div>
+          <div aria-hidden className="h-6 bg-gradient-to-b from-[#ebf0f6] to-tint lg:h-10" />
+        </>
       )}
 
+      <div className="container-site pt-1 pb-16 lg:pt-2 lg:pb-24">
       {/* Título e total à esquerda; a ordenação (desktop) à direita. A busca ocupa a largura
           inteira da área de produtos, logo abaixo. */}
       <div className="mt-1 flex items-end justify-between gap-6 lg:mt-2">
@@ -227,6 +238,7 @@ export async function Catalogo({ searchParams, departamento = "" }: { searchPara
       </div>
 
       <SecaoPromocoes origem={depto ? "categoria" : "produtos"} tom="claro" aninhada />
+      </div>
     </div>
   );
 }

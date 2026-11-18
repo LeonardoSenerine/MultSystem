@@ -55,8 +55,6 @@ type Destaque = {
   numerado?: boolean;
   fotos: [Foto, Foto, Foto, Foto, Foto];
   espelho?: boolean;
-  /** Esconde as setas neste destaque (elas cobririam os produtos da capa). */
-  semSetas?: boolean;
 };
 
 const destaques: Destaque[] = [
@@ -88,7 +86,6 @@ const destaques: Destaque[] = [
       "Retire na loja ou combine a entrega",
     ],
     numerado: true,
-    semSetas: true,
     fotos: [{ src: "/img/fachada-noite.jpg", loja: true }, produto("0014464"), produto("0014466"), produto("0013318"), produto("0014228")],
   },
 ];
@@ -96,7 +93,7 @@ const destaques: Destaque[] = [
 const semMovimento = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 const seta =
-  "pointer-events-auto grid size-11 place-items-center rounded-full bg-white/65 text-ink/60 backdrop-blur-[2px] transition-[background-color,color,transform] duration-200 hover:bg-white hover:text-brand active:scale-90";
+  "pointer-events-auto grid size-9 place-items-center rounded-full bg-white/60 text-ink/60 backdrop-blur-[2px] transition-[background-color,color,transform] duration-200 hover:bg-white hover:text-brand active:scale-90";
 
 /** `capas`: caminho da capa de cada destaque (pelo id), para os que já têm a imagem pronta. */
 export function VitrineProdutos({ capas = {} }: { capas?: Record<string, string> }) {
@@ -135,7 +132,7 @@ export function VitrineProdutos({ capas = {} }: { capas?: Record<string, string>
       onPointerDown={(e) => (toque.current = { x: e.clientX, y: e.clientY })}
       onPointerUp={aoSoltar}
       onPointerCancel={() => (toque.current = null)}
-      className={`relative touch-pan-y overflow-hidden rounded-card ring-1 ring-line ${FUNDO_CAPA}`}
+      className={`relative touch-pan-y overflow-hidden ${FUNDO_CAPA}`}
     >
       {/* Os destaques ocupam a mesma célula da grade: o mais alto define a altura do banner. */}
       <div aria-live={pausado ? "polite" : "off"} className="grid">
@@ -157,7 +154,7 @@ export function VitrineProdutos({ capas = {} }: { capas?: Record<string, string>
               {capa ? (
                 /* Capa: no celular fica em cima do texto (com a base esmaecendo na cor do fundo); no desktop
                    é o fundo do banner inteiro. */
-                <div aria-hidden className="relative aspect-[16/9] overflow-hidden lg:absolute lg:inset-0 lg:aspect-auto">
+                <div aria-hidden className="vitrine-capa-mascara relative aspect-[16/9] overflow-hidden lg:absolute lg:inset-0 lg:aspect-auto">
                   <div className="vitrine-capa absolute inset-0">
                     <Image
                       src={capa}
@@ -169,7 +166,6 @@ export function VitrineProdutos({ capas = {} }: { capas?: Record<string, string>
                       className="object-cover object-right"
                     />
                   </div>
-                  <div className="absolute inset-x-0 bottom-0 h-8 bg-gradient-to-t from-[#ebf0f6] to-transparent lg:hidden" />
                 </div>
               ) : (
                 /* Sem capa: colagem de fotos de produtos. */
@@ -198,7 +194,7 @@ export function VitrineProdutos({ capas = {} }: { capas?: Record<string, string>
               )}
 
               <div
-                className={`vitrine-texto relative flex flex-col justify-center p-5 sm:p-6 lg:order-1 lg:p-10 ${
+                className={`vitrine-texto relative flex flex-col justify-center px-5 pt-5 pb-11 sm:px-6 sm:pt-6 sm:pb-12 lg:order-1 lg:p-10 ${
                   capa ? "lg:max-w-[48%] lg:pl-16" : ""
                 }`}
               >
@@ -227,20 +223,36 @@ export function VitrineProdutos({ capas = {} }: { capas?: Record<string, string>
         })}
       </div>
 
-      {/* Setas simples nas laterais. No celular ficam na altura da capa (16:9); no desktop, no meio do banner. */}
-      <div
-        inert={destaques[indice].semSetas}
-        className={`pointer-events-none absolute inset-x-0 top-0 z-20 flex aspect-[16/9] items-center justify-between px-1 transition-opacity duration-500 lg:inset-y-0 lg:aspect-auto lg:px-3 ${
-          destaques[indice].semSetas ? "opacity-0" : ""
-        }`}
-      >
+      {/* Setas pequenas e simples nas laterais, em todos os destaques. No celular ficam na altura da capa (16:9); no desktop, no meio do banner. */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 z-20 flex aspect-[16/9] items-center justify-between px-1.5 lg:inset-y-0 lg:aspect-auto lg:px-4">
         <button type="button" onClick={() => ir(indice - 1)} aria-label="Destaque anterior" className={seta}>
-          <ChevronLeft aria-hidden className="size-7" strokeWidth={2} />
+          <ChevronLeft aria-hidden className="size-5" strokeWidth={2.25} />
         </button>
         <button type="button" onClick={() => ir(indice + 1)} aria-label="Próximo destaque" className={seta}>
-          <ChevronRight aria-hidden className="size-7" strokeWidth={2} />
+          <ChevronRight aria-hidden className="size-5" strokeWidth={2.25} />
         </button>
       </div>
-    </section>
-  );
+
+      {/* Pontinhos, como no carrossel do Instagram: mostram quantos destaques existem e em qual você está. */}
+      <div className="absolute inset-x-0 bottom-1.5 z-20 flex justify-center lg:bottom-3">
+        <div className="flex items-center">
+          {destaques.map((d, i) => (
+            <button
+              key={d.id}
+              type="button"
+              onClick={() => ir(i)}
+              aria-label={`Ir para o destaque ${i + 1} de ${destaques.length}`}
+              aria-current={i === indice}
+              className="group grid size-6 place-items-center"
+            >
+              <span
+                className={`block size-2 rounded-full transition-[background-color,transform] duration-300 ${
+                  i === indice ? "scale-125 bg-brand" : "bg-ink/25 group-hover:bg-ink/45"
+                }`}
+              />
+            </button>
+          ))}
+        </div>
+      </div>
+    </section>  );
 }

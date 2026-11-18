@@ -519,6 +519,27 @@
   animation-delay: calc(var(--i, 0) * 70ms + 80ms);
 }
 
+/*
+ * Capa do banner: as bordas esmaecem para a cor do fundo (alto e baixo sempre; nas laterais só no desktop,
+ * onde a capa não vai até a borda da tela), assim o banner se mistura com a página, sem linha de corte.
+ */
+.vitrine-capa-mascara {
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
+  mask-image: linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%);
+}
+
+@media (width >= 64rem) {
+  .vitrine-capa-mascara {
+    -webkit-mask-image:
+      linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%),
+      linear-gradient(to right, transparent 0, #000 4%, #000 95%, transparent 100%);
+    mask-image:
+      linear-gradient(to bottom, transparent 0, #000 16%, #000 84%, transparent 100%),
+      linear-gradient(to right, transparent 0, #000 4%, #000 95%, transparent 100%);
+    -webkit-mask-composite: source-in;
+    mask-composite: intersect;
+  }
+}
 @keyframes vitrine-texto {
   0% { transform: translateY(12px); opacity: 0; }
   100% { transform: none; opacity: 1; }

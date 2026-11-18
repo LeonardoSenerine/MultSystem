@@ -10,14 +10,13 @@ type Caminho = {
   href: string;
   imagem: string;
   alt: string;
-  principal?: boolean;
 };
 
 // TODO: fotos de banco de imagens (origem em public/img/FONTES.md). Trocar por fotos da loja
 // (vendedor atendendo empresa, cliente no balcão, bancada da Total Tech) quando a Multsystems enviar.
 
 export function Caminhos() {
-  // Empresa vem primeiro: é quem mais fatura. Só ela tem o botão azul cheio (ação principal).
+  // Empresa vem primeiro: é quem mais fatura. Os três cards têm o mesmo estilo.
   const caminhos: Caminho[] = [
     {
       titulo: "Orçamento para empresa",
@@ -26,7 +25,6 @@ export function Caminhos() {
       href: "#orcamento",
       imagem: "/img/caminhos/empresa.jpg",
       alt: "Dois profissionais conversando sobre uma proposta num notebook",
-      principal: true,
     },
     {
       titulo: "Comprar para casa",
@@ -79,17 +77,10 @@ export function Caminhos() {
                   <span className="flex flex-1 flex-col p-5 lg:p-7">
                     <h3 className="text-h3 text-ink">{c.titulo}</h3>
                     <p className="mt-2 flex-1 text-body text-muted">{c.texto}</p>
-                    {c.principal ? (
-                      <span className="mt-6 inline-flex min-h-11 items-center justify-center gap-2 self-start rounded-btn bg-brand px-5 text-[15px] leading-5 font-bold text-white transition-colors group-hover:bg-[#263b73]">
-                        {c.acao}
-                        <ArrowRight aria-hidden className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                      </span>
-                    ) : (
-                      <span className="mt-6 inline-flex min-h-11 items-center gap-2 self-start text-[15px] leading-5 font-bold text-brand">
-                        {c.acao}
-                        <ArrowRight aria-hidden className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
-                      </span>
-                    )}
+                    <span className="mt-6 inline-flex min-h-11 items-center gap-2 self-start text-[15px] leading-5 font-bold text-brand">
+                      {c.acao}
+                      <ArrowRight aria-hidden className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+                    </span>
                   </span>
                 </Link>
               </Reveal>
