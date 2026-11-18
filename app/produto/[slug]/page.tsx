@@ -126,26 +126,19 @@ async function ProdutoConteudo({ params }: PageProps<"/produto/[slug]">) {
           ]}
         />
 
-        <article className="mt-3 grid gap-6 rounded-card bg-white p-4 ring-1 ring-line md:grid-cols-2 lg:mt-4 lg:gap-12 lg:p-10">
-          <div className="flex flex-col gap-4">
+        <article className="mt-3 grid gap-6 rounded-card bg-white p-4 ring-1 ring-line md:grid-cols-2 md:grid-rows-[auto_1fr] md:gap-y-4 lg:mt-4 lg:gap-x-12 lg:p-10">
+          {/* No celular a ordem é foto, preço e compra, e só depois os quadros (retirada, nota, entrega, garantia);
+              do tablet para cima os quadros ficam embaixo da foto, na coluna da esquerda. */}
+          <div className="md:col-start-1 md:row-start-1">
             <div className="relative">
-              <FotoZoom className="relative aspect-square overflow-hidden rounded-card bg-white ring-1 ring-line/70">
+              <FotoZoom className="relative aspect-[5/4] overflow-hidden rounded-card bg-white ring-1 ring-line/70 md:aspect-square">
                 <FotoProduto src={produto.imagem} alt={produto.nome} temFoto={produto.temFoto} sizes="(min-width: 1024px) 520px, (min-width: 768px) 45vw, 100vw" preload className="p-6" />
               </FotoZoom>
               <BotaoFavorito produto={dados} className="absolute top-3 right-3 z-10" />
             </div>
-
-            <ul className="grid gap-px overflow-hidden rounded-card bg-line ring-1 ring-line sm:grid-cols-2">
-              {vantagens.map((v) => (
-                <li key={v.titulo} className="bg-white p-4 transition-colors duration-300 hover:bg-tint">
-                  <p className="text-[15px] leading-5 font-extrabold text-ink">{v.titulo}</p>
-                  <p className="mt-1 text-[13px] leading-[18px] text-muted">{v.texto}</p>
-                </li>
-              ))}
-            </ul>
           </div>
 
-          <div className="flex flex-col">
+          <div className="flex flex-col md:col-start-2 md:row-span-2 md:row-start-1">
             {marca && <p className="text-eyebrow text-brand">{marca}</p>}
             <h1 className="mt-2 text-[24px] leading-8 font-bold tracking-tight text-ink lg:text-[30px] lg:leading-10">{quebravel(produto.nome)}</h1>
             <p className="mt-2 text-small text-muted">Cód. {produto.codigo}</p>
@@ -196,6 +189,14 @@ async function ProdutoConteudo({ params }: PageProps<"/produto/[slug]">) {
             </div>
 
           </div>
+          <ul className="grid gap-px overflow-hidden rounded-card bg-line ring-1 ring-line sm:grid-cols-2 md:col-start-1 md:row-start-2 md:self-start">
+              {vantagens.map((v) => (
+                <li key={v.titulo} className="bg-white p-4 transition-colors duration-300 hover:bg-tint">
+                  <p className="text-[15px] leading-5 font-extrabold text-ink">{v.titulo}</p>
+                  <p className="mt-1 text-[13px] leading-[18px] text-muted">{v.texto}</p>
+                </li>
+              ))}
+            </ul>
         </article>
 
         <div className="mt-6 grid gap-6 lg:mt-8 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-8">

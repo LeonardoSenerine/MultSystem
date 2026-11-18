@@ -65,7 +65,7 @@ export function CardProduto({ produto, preload = false }: { produto: ProdutoCata
           </p>
           <p className="text-[13px] leading-4 text-muted">
             ou {parcelaEm3x(produto.preco)} sem juros
-            {produto.estoque > 0 && produto.estoque <= 3 ? ` · últimas ${produto.estoque}` : ""}
+            {produto.estoque === 1 ? " · última unidade" : produto.estoque > 1 && produto.estoque <= 3 ? ` · últimas ${produto.estoque}` : ""}
           </p>
         </div>
 

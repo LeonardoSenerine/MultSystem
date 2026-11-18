@@ -132,9 +132,11 @@ export function PaginaCarrinho({ whatsapp }: { whatsapp: string }) {
   const whatsappHref = `https://wa.me/${whatsapp}?text=${encodeURIComponent(mensagem)}`;
 
   return (
-    <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start lg:gap-8">
-      <div className="min-w-0">
-      <section aria-label="Produtos no carrinho" className="overflow-hidden rounded-card bg-white ring-1 ring-line">
+    <div className="grid lg:grid-cols-[minmax(0,1fr)_360px] lg:grid-rows-[auto_1fr] lg:items-start lg:gap-x-8">
+      <section
+        aria-label="Produtos no carrinho"
+        className="min-w-0 overflow-hidden rounded-card bg-white ring-1 ring-line lg:col-start-1 lg:row-start-1"
+      >
         {mudouPreco && (
           <p role="status" className="erro-campo border-b border-line bg-[#fff8e1] px-5 py-3 text-small text-ink">
             Alguns preços mudaram desde que você adicionou. O carrinho já mostra os valores de hoje.
@@ -217,12 +219,12 @@ export function PaginaCarrinho({ whatsapp }: { whatsapp: string }) {
         </div>
       </section>
 
-      <SugestoesCarrinho />
-      <ListasSalvas />
-      </div>
-
-      {/* Resumo: fica parado ao lado da lista no desktop. */}
-      <aside aria-label="Resumo do pedido" className="rounded-card bg-white p-5 ring-1 ring-line lg:sticky lg:top-[104px] lg:p-6">
+      {/* Resumo: no celular vem logo depois da lista (o botão de finalizar não fica escondido atrás das
+          sugestões); no desktop fica parado ao lado, ocupando a altura toda da coluna. */}
+      <aside
+        aria-label="Resumo do pedido"
+        className="mt-6 rounded-card bg-white p-5 ring-1 ring-line lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:mt-0 lg:sticky lg:top-[104px] lg:p-6"
+      >
         <p className="text-[17px] font-extrabold text-ink">Resumo</p>
         <dl className="mt-4 grid gap-2 text-body">
           <div className="flex justify-between text-muted">
@@ -296,6 +298,12 @@ export function PaginaCarrinho({ whatsapp }: { whatsapp: string }) {
           <ContatoCarrinho />
         )}
       </aside>
+
+      {/* Sugestões e listas salvas: depois do resumo no celular, embaixo da lista no desktop. */}
+      <div className="min-w-0 lg:col-start-1 lg:row-start-2">
+        <SugestoesCarrinho />
+        <ListasSalvas />
+      </div>
     </div>
   );
 }
