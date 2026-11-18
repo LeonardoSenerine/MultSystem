@@ -16,7 +16,7 @@ const CATALOGO_API_URL = process.env.CATALOGO_API_URL || "https://multsystems.di
 export const catalogoUrl = "/produtos";
 
 // Categorias internas do sistema que não são produtos à venda.
-const CATEGORIAS_OCULTAS = new Set(["FRETE", "SERVIÇO", "OUTRAS RECEITAS", "ATIVO", "SOFTWARE"]);
+const CATEGORIAS_OCULTAS = new Set(["FRETE", "SERVIÇO", "OUTRAS RECEITAS", "ATIVO"]);
 
 type ItemApi = {
   cod_produto?: string;

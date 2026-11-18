@@ -141,6 +141,12 @@ export const departamentos: Departamento[] = [
     subcategorias: [sub("AUTOMAÇÃO COMERCIAL", "Automação comercial")],
   },
   {
+    slug: "software-e-licencas",
+    nome: "Software e licenças",
+    descricao: "Windows, Office e antivírus",
+    subcategorias: [sub("SOFTWARE", "Software e licenças")],
+  },
+  {
     slug: "celular-e-acessorios",
     nome: "Celular e acessórios",
     descricao: "Películas, capas, mochilas e acessórios",
