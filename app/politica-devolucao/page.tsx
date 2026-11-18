@@ -15,7 +15,7 @@ export const metadata: Metadata = {
  * Texto da política da loja, enviado pelo cliente em 18/11/2026 (era a página /politica-devolucao do site antigo;
  * o endereço foi mantido para não quebrar links). Mudanças feitas só nos dados de contato: o texto antigo trazia
  * WhatsApp (11) 99999-9999 e telefone (11) 3456-7890, que são números de exemplo; aqui valem os do site (src/data/contato.ts).
- * O número do WhatsApp da Total Tech (11) 99595-6716 vem do texto original.
+ * O WhatsApp da Total Tech (11) 99595-6716 vem de contato.whatsappTotalTech (confirmado pelo cliente em 18/11/2026).
  * TODO: revisão jurídica. Pontos a conferir com o jurídico: frete de devolução por conta do cliente no arrependimento
  * e reembolso "em até 2 faturas / 10 dias úteis" (o CDC pede devolução imediata dos valores pagos).
  */
@@ -34,7 +34,7 @@ const sumario = [
   ["atendimento", "Atendimento e suporte"],
 ] as const;
 
-const TOTAL_TECH_WHATSAPP = "5511995956716";
+
 
 export default function PoliticaDevolucaoPage() {
   const contato = getContato();
@@ -120,7 +120,7 @@ export default function PoliticaDevolucaoPage() {
         <li>Apresentar a nota fiscal e o certificado de garantia.</li>
         <li>
           WhatsApp da assistência:{" "}
-          <a href={whatsappLink(TOTAL_TECH_WHATSAPP)} target="_blank" rel="noopener noreferrer">
+          <a href={whatsappLink(contato.whatsappTotalTech)} target="_blank" rel="noopener noreferrer">
             (11) 99595-6716
           </a>
           .
@@ -250,7 +250,7 @@ export default function PoliticaDevolucaoPage() {
       <ul>
         <li>
           WhatsApp:{" "}
-          <a href={whatsappLink(TOTAL_TECH_WHATSAPP)} target="_blank" rel="noopener noreferrer">
+          <a href={whatsappLink(contato.whatsappTotalTech)} target="_blank" rel="noopener noreferrer">
             (11) 99595-6716
           </a>
         </li>

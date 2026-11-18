@@ -6,13 +6,13 @@ import type { Contato } from "@/types";
  * TODO: dado real. Confirmar com a Multsystems:
  *  - Endereço, WhatsApp, Mercado Livre e Instagram foram tirados do site atual
  *    (multsystems.com.br). Confirmar se continuam valendo.
- *  - WhatsApp da Total Tech: ainda não temos. Enquanto não vier, cai no da Multsystems.
+ *  - WhatsApp da Total Tech: (11) 99595-6716, informado pelo cliente em 18/11/2026.
  */
 
 const somenteDigitos = (valor: string | undefined) => (valor ?? "").replace(/\D/g, "");
 
 const whatsapp = somenteDigitos(process.env.WHATSAPP_MULTSYSTEMS) || "551148948411";
-const whatsappTotalTech = somenteDigitos(process.env.WHATSAPP_TOTALTECH) || whatsapp;
+const whatsappTotalTech = somenteDigitos(process.env.WHATSAPP_TOTALTECH) || "5511995956716";
 
 const endereco = "R. Campos Sales, 508, Centro, Itatiba/SP";
 const enderecoBusca = encodeURIComponent("R. Campos Sales, 508 - Centro, Itatiba - SP");
