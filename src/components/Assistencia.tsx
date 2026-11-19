@@ -36,7 +36,7 @@ export function Assistencia() {
         <Reveal className="flex flex-col justify-center" atraso={120}>
           <p className="text-eyebrow text-brand-light">Assistência técnica</p>
           <h2 id="assistencia-titulo" className="mt-3 text-h2 text-balance">
-            Conserto aqui dentro da loja, com a Total Tech
+            Seu equipamento parou? A Total Tech resolve.
           </h2>
           <p className="mt-4 max-w-[46ch] text-body-lg text-white/85">
             A assistência parceira funciona dentro da nossa loja. Você traz o notebook ou o PC, o técnico faz a avaliação (que é paga) e envia o orçamento do conserto.

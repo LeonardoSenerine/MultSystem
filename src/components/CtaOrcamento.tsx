@@ -13,13 +13,12 @@ export function CtaOrcamento() {
     <section id="orcamento" aria-labelledby="orcamento-titulo" className="on-dark section-y bg-brand text-white">
       <Reveal className="container-site grid grid-cols-[minmax(0,1fr)] gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-16">
         <div>
-          <p className="text-eyebrow text-white/70">Orçamento</p>
+          <p className="text-eyebrow text-white/70">Especialistas em B2B</p>
           <h2 id="orcamento-titulo" className="mt-3 text-h2 text-balance">
-            Peça a cotação da sua empresa
+            Peça um orçamento. A gente responde com preço, prazo e nota fiscal.
           </h2>
           <p className="mt-4 max-w-[44ch] text-body-lg text-white/85">
-            Mande o que a empresa precisa, mesmo que seja uma lista solta. Um vendedor responde com preço, prazo e as opções que cabem
-            no orçamento.
+            Vender para empresas é a nossa especialidade. Conte o que a sua precisa e um vendedor monta a cotação com as opções que cabem no seu orçamento.
           </p>
 
           <ul className="mt-8 divide-y divide-white/15 border-y border-white/15 text-body text-white/90">

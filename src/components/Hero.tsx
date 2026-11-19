@@ -47,15 +47,19 @@ export function Hero() {
       <ElipseMarca />
 
       <div className="container-site relative grid gap-y-8 pt-8 pb-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,580px)] lg:gap-x-14 lg:gap-y-8 lg:py-12">
-        <div className="hero-texto lg:col-start-1 lg:row-start-1 lg:self-center">
-          <p className="text-small font-semibold text-white/70">Loja de informática no Centro de Itatiba, desde 1995</p>
+        <div className="hero-texto lg:col-start-1 lg:row-start-1 lg:self-end">
+          <p className="inline-flex flex-wrap items-center gap-x-2 rounded-btn border border-white/25 px-3 py-1.5 text-small text-white">
+            <span>Desde 1995 em Itatiba</span>
+            <span aria-hidden className="text-white/40">·</span>
+            <span>Especialistas em B2B</span>
+          </p>
 
-          <h1 id="hero-titulo" className="mt-3 text-display text-balance lg:mt-4">
-            Computador, impressora e rede para a sua empresa
+          <h1 id="hero-titulo" className="mt-5 text-display text-balance lg:mt-6">
+            Informática para sua empresa <span className="block text-brand-light">e para sua casa</span>
           </h1>
 
-          <p className="mt-4 max-w-[44ch] text-body-lg text-white/85 lg:mt-6">
-            E para a sua casa também, no balcão ou pelo WhatsApp. Toda venda sai com nota fiscal.
+          <p className="mt-4 max-w-[42ch] text-body-lg text-white/85 lg:mt-6">
+            Computadores, impressoras, redes e câmeras com nota fiscal, garantia e atendimento de quem entende.
           </p>
 
           <div className="mt-8 flex flex-col gap-3 sm:flex-row">
@@ -68,7 +72,7 @@ export function Hero() {
           </div>
         </div>
 
-        <figure className="hero-foto lg:col-start-2 lg:row-start-1 lg:self-center">
+        <figure className="hero-foto lg:col-start-2 lg:row-span-2 lg:row-start-1 lg:self-center">
           <Image
             src="/img/fachada.jpg"
             alt="Fachada da loja Multsystems em Itatiba, com o letreiro azul acima da entrada"
@@ -80,30 +84,25 @@ export function Hero() {
             sizes="(min-width: 1024px) 580px, (min-width: 768px) 720px, 100vw"
             className="aspect-[2400/1757] h-auto w-full rounded-photo object-cover"
           />
-          <figcaption className="mt-3 text-small text-white/70">{contato.endereco}</figcaption>
+          <figcaption className="mt-3 text-small text-white/85">
+            Nossa loja: <span className="text-white">{contato.endereco}</span>
+          </figcaption>
         </figure>
 
-        {/* Rodapé do hero: horário real da loja e o link do Mercado Livre (no lugar de uma lista de "qualidades").
-            Só no celular e no tablet: no desktop a faixa do topo (TopBar) já mostra as duas coisas. */}
-        <dl className="grid gap-x-8 gap-y-3 border-t border-white/15 pt-5 text-small sm:grid-cols-2 lg:hidden">
-          <div>
-            <dt className="text-white/60">Horário da loja</dt>
-            <dd className="mt-0.5 text-white">{contato.horario}</dd>
-          </div>
-          <div>
-            <dt className="text-white/60">Também vendemos no</dt>
-            <dd>
-              <a
-                href={contato.mercadoLivreUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center font-semibold text-white underline underline-offset-4 decoration-white/40 hover:decoration-white sm:min-h-0 sm:mt-0.5"
-              >
-                Mercado Livre (loja oficial)
-              </a>
-            </dd>
-          </div>
-        </dl>
+        <ul className="flex flex-wrap items-center gap-y-1 border-t border-white/15 pt-5 text-small text-white/85 lg:col-start-1 lg:row-start-2 lg:self-start [&>li+li]:before:mx-2 [&>li+li]:before:text-white/40 [&>li+li]:before:content-['·']">
+          <li className="whitespace-nowrap">
+            <a
+              href={contato.mercadoLivreUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex min-h-11 items-center underline-offset-4 hover:text-white hover:underline"
+            >
+              Loja oficial no Mercado Livre
+            </a>
+          </li>
+          <li className="whitespace-nowrap">Nota fiscal e garantia</li>
+          <li className="whitespace-nowrap">Retirada na loja</li>
+        </ul>
       </div>
     </section>
   );

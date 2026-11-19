@@ -54,8 +54,9 @@ export default function SobrePage() {
       <section aria-labelledby="principios-titulo" className="section-y bg-tint">
         <div className="container-site">
           <Reveal className="max-w-[60ch]">
-            <h2 id="principios-titulo" className="text-h2 text-balance text-ink">
-              Como a gente trabalha
+            <p className="text-eyebrow text-brand">Como trabalhamos</p>
+            <h2 id="principios-titulo" className="mt-2 text-h2 text-balance text-ink">
+              Três compromissos que não mudam
             </h2>
           </Reveal>
           <ol className="mt-8 grid gap-4 lg:mt-12 lg:grid-cols-3 lg:gap-6">

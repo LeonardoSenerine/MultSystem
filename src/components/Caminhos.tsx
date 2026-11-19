@@ -49,7 +49,7 @@ export function Caminhos() {
       <div className="container-site">
         <Reveal>
           <h2 id="caminhos-titulo" className="text-center text-h2 text-ink">
-            Empresa, casa ou conserto
+            Como podemos ajudar?
           </h2>
         </Reveal>
 

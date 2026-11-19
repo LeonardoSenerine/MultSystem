@@ -36,15 +36,15 @@ function Cartao({ a }: { a: Avaliacao }) {
   }, [aberto]);
 
   return (
-    <figure className="flex h-full flex-col rounded-card border border-line bg-white p-4 lg:p-5">
+    <figure className="flex h-full flex-col rounded-card border border-line bg-white p-3.5 lg:p-4">
       <div className="flex items-center justify-between gap-3">
         <Estrelas />
-        <span className="text-[12px] leading-4 text-muted">
+        <span className="text-[11px] leading-4 text-muted">
           <span className="sr-only">Avaliação no {a.origem}, </span>
           {a.quando}
         </span>
       </div>
-      <blockquote ref={citacao} className={`mt-2.5 text-small text-ink ${aberto ? "" : "line-clamp-3"}`}>
+      <blockquote ref={citacao} className={`mt-2 text-[13px] leading-[19px] text-ink ${aberto ? "" : "line-clamp-3"}`}>
         &ldquo;{a.texto}&rdquo;
       </blockquote>
       {(cortado || aberto) && (
@@ -52,12 +52,12 @@ function Cartao({ a }: { a: Avaliacao }) {
           type="button"
           onClick={() => setAberto((v) => !v)}
           aria-expanded={aberto}
-          className="inline-flex min-h-11 items-center self-start text-[13px] font-bold text-brand hover:underline"
+          className="inline-flex min-h-9 items-center self-start text-[12px] font-bold text-brand hover:underline"
         >
           {aberto ? "Ler menos" : "Ler mais"}
         </button>
       )}
-      <figcaption className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 pt-3 text-small">
+      <figcaption className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 pt-2.5 text-[13px] leading-[18px]">
         <span className="font-bold text-ink">{a.nome}</span>
         {a.localGuide && <span className="rounded-full bg-tint px-2 py-0.5 text-[11px] leading-4 font-semibold text-brand">Local Guide</span>}
       </figcaption>
@@ -162,10 +162,11 @@ export function CarrosselAvaliacoes({ avaliacoes }: { avaliacoes: Avaliacao[] })
         onScroll={medir}
         tabIndex={0}
         aria-label="Avaliações de clientes no Google"
-        className="relative -mx-4 flex snap-x snap-mandatory scroll-pl-4 items-stretch gap-3 overflow-x-auto px-4 pb-2 md:scroll-pl-6 lg:scroll-pl-0 [scrollbar-width:none] md:-mx-6 md:px-6 lg:mx-0 lg:gap-6 lg:px-0 [&::-webkit-scrollbar]:hidden"
+        className="relative -mx-4 flex snap-x snap-mandatory scroll-pl-4 items-stretch gap-3 overflow-x-auto px-4 pb-2 md:scroll-pl-6 lg:scroll-pl-0 [scrollbar-width:none] md:-mx-6 md:px-6 lg:mx-0 lg:gap-4 lg:px-0 [&::-webkit-scrollbar]:hidden"
       >
         {avaliacoes.map((a) => (
-          <li key={a.nome} className="w-[84%] shrink-0 snap-start sm:w-[calc(50%-6px)] lg:w-[calc((100%-48px)/3)]">
+          // Cartões compactos: 1 e meio no celular, 2 e meio no tablet, 4 no desktop.
+          <li key={a.nome} className="w-[72%] shrink-0 snap-start sm:w-[calc(40%-6px)] lg:w-[calc((100%-48px)/4)]">
             <Cartao a={a} />
           </li>
         ))}

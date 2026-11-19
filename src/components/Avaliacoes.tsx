@@ -62,7 +62,7 @@ export function Avaliacoes() {
         <div>
           <Estrelas />
           <h3 id="avaliacoes-titulo" className="mt-3 text-h2 text-ink">
-            Avaliações no Google
+            Quem compra, recomenda
           </h3>
           <p className="mt-2 max-w-[56ch] text-body text-muted">
             {avaliacoes.length} avaliações de clientes no Google, todas com 5 estrelas. Veja também a nossa loja oficial no Mercado Livre

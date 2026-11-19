@@ -8,7 +8,7 @@ function Faixa({ oculta = false }: { oculta?: boolean }) {
   return (
     <ul
       aria-hidden={oculta || undefined}
-      className="marquee-copia flex shrink-0 items-center gap-16 pr-16 lg:gap-24 lg:pr-24"
+      className="marquee-copia flex shrink-0 items-center gap-10 pr-10 lg:gap-14 lg:pr-14"
     >
       {marcas.map((m) => {
         // Logos quadrados (Dell, HP) somem ao lado dos que são só texto: ganham mais altura
@@ -22,7 +22,7 @@ function Faixa({ oculta = false }: { oculta?: boolean }) {
               width={Math.round((m.largura / m.altura) * ALTURA)}
               height={ALTURA}
               unoptimized
-              className={quadrado ? "h-12 w-auto lg:h-14" : "h-8 w-auto lg:h-10"}
+              className={quadrado ? "h-8 w-auto lg:h-9" : "h-5 w-auto lg:h-6"}
             />
           </li>
         );
@@ -46,7 +46,7 @@ export function MarcasMarquee() {
         <p className="text-small text-muted">Produtos originais, com garantia do fabricante</p>
       </div>
 
-      <div className="marquee mt-10 overflow-hidden py-4 lg:mt-14" role="group" aria-label="Marcas que vendemos">
+      <div className="marquee mt-6 overflow-hidden py-3 lg:mt-8" role="group" aria-label="Marcas que vendemos">
         <div className="marquee-track flex w-max">
           <Faixa />
           <Faixa oculta />

@@ -31,7 +31,7 @@ export function SecaoPromocoes({
           <div>
             <p className={`text-eyebrow ${escuro ? "text-white/70" : "text-brand"}`}>Promoções e avisos</p>
             <h2 id={`promocoes-titulo-${origem}`} className="mt-2 text-h2 text-balance">
-              Avisamos quando entrar promoção
+              Receba as ofertas antes de acabarem
             </h2>
             <p className={`mt-4 max-w-[44ch] text-body-lg ${escuro ? "text-white/85" : "text-muted"}`}>
               Deixe o seu WhatsApp ou e-mail e a gente avisa quando entrar promoção ou chegar o que você procura. Só o que interessa, e você

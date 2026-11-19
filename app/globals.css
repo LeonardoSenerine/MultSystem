@@ -331,7 +331,8 @@
 
 /* Logos nas cores originais e sem pausa (pedido do cliente: o carrossel é só um detalhe). */
 .marquee-track {
-  animation: marquee 40s linear infinite;
+  /* Com os logos menores a faixa ficou mais curta: 22s dá uma passagem mais rápida (antes 40s). */
+  animation: marquee 22s linear infinite;
 }
 
 @keyframes marquee {

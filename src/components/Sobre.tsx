@@ -1,3 +1,4 @@
+import { Building2, Headset, Star, Store, type LucideIcon } from "lucide-react";
 import { Reveal } from "@/components/Reveal";
 
 type Prova = { titulo: string; texto: string };
@@ -12,40 +13,53 @@ export const provas: Prova[] = [
   { titulo: "Pós-venda de verdade", texto: "Precisou de ajuda depois da compra? Volte ao balcão ou chame no WhatsApp." },
 ];
 
-/** Sobre a empresa + provas. As marcas e as avaliações entram logo abaixo, na mesma faixa tint. */
+// Ícone de cada resumo, na mesma ordem de `provas`.
+const icones: LucideIcon[] = [Building2, Store, Star, Headset];
+
+/**
+ * Sobre a empresa, em resumos: à esquerda o título e um parágrafo curto; à direita quatro cartões brancos
+ * (ícone, título e uma linha). No celular os cartões viram linhas compactas, com o ícone ao lado do texto.
+ * As marcas e as avaliações entram logo abaixo, na mesma faixa tint.
+ */
 export function Sobre() {
   return (
-    <div className="container-site">
-      <div className="grid gap-6 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
-        <Reveal>
-          <p className="text-eyebrow text-brand">Sobre a Multsystems</p>
-          <h2 id="sobre-titulo" className="mt-2 text-h2 text-ink text-balance">
-            31 anos vendendo informática em Itatiba
-          </h2>
-        </Reveal>
+    <div className="container-site grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:items-center lg:gap-16">
+      {/* TODO: dado real. Texto escrito só com o que já sabemos da empresa; pedir à Multsystems
+          a história (quem fundou, como começou) para completar este bloco. */}
+      <Reveal>
+        <p className="text-eyebrow text-brand">Sobre a Multsystems</p>
+        <h2 id="sobre-titulo" className="mt-2 text-h2 text-ink text-balance">
+          31 anos vendendo informática em Itatiba
+        </h2>
+        <p className="mt-4 max-w-[46ch] text-body-lg text-muted">
+          Hoje a maior parte do trabalho é com empresas: equipar escritórios, montar redes e instalar câmeras. Mas a porta continua
+          aberta para quem compra para casa, e a Total Tech conserta aqui mesmo.
+        </p>
+      </Reveal>
 
-        {/* TODO: dado real. Texto escrito só com o que já sabemos da empresa; pedir à Multsystems
-            a história (quem fundou, como começou) para completar este bloco. */}
-        <Reveal className="space-y-4 text-body-lg text-ink lg:pt-9" atraso={100}>
-          <p>
-            A Multsystems é uma loja de informática no Centro de Itatiba. Hoje a maior parte do nosso trabalho é com
-            empresas: equipar escritórios, montar redes, instalar câmeras e manter tudo funcionando, com nota fiscal e um
-            vendedor que acompanha o pedido do começo ao fim.
-          </p>
-          <p className="text-muted">
-            A porta continua aberta para quem compra para casa. Você vê o produto no balcão, tira a dúvida com quem vende e,
-            se algo der problema, a Total Tech conserta aqui mesmo.
-          </p>
-        </Reveal>
-      </div>
-
-      <ul className="mt-12 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:mt-16 lg:grid-cols-4">
-        {provas.map((p, i) => (
-          <Reveal as="li" key={p.titulo} className="border-t-2 border-brand pt-5" atraso={i * 90}>
-            <h3 className="text-h3 text-ink">{p.titulo}</h3>
-            <p className="mt-2 text-body text-muted">{p.texto}</p>
-          </Reveal>
-        ))}
+      <ul className="grid gap-3 sm:grid-cols-2 lg:gap-4">
+        {provas.map((p, i) => {
+          const Icone = icones[i];
+          return (
+            <Reveal
+              as="li"
+              key={p.titulo}
+              atraso={i * 90}
+              className="group flex gap-4 rounded-card bg-white p-4 ring-1 ring-line transition-[box-shadow,transform,--tw-ring-color] duration-300 hover:shadow-card hover:ring-brand/30 sm:flex-col sm:gap-3 sm:p-5 lg:p-6 lg:hover:-translate-y-0.5"
+            >
+              <span
+                aria-hidden
+                className="grid size-11 shrink-0 place-items-center rounded-full bg-tint text-brand transition-colors duration-300 group-hover:bg-brand group-hover:text-white"
+              >
+                <Icone className="size-5" />
+              </span>
+              <div className="min-w-0">
+                <h3 className="text-[17px] leading-6 font-bold text-ink">{p.titulo}</h3>
+                <p className="mt-1 text-small text-muted">{p.texto}</p>
+              </div>
+            </Reveal>
+          );
+        })}
       </ul>
     </div>
   );
