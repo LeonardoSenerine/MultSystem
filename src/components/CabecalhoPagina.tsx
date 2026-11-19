@@ -68,12 +68,13 @@ export function CabecalhoPagina({
           <h1 className="text-display text-balance">{titulo}</h1>
           {texto && <p className="mt-4 max-w-[52ch] text-body-lg text-white/85">{texto}</p>}
 
+          {/* Etiquetas do mesmo tamanho: colunas iguais e mesma altura (o texto quebra dentro, se precisar). */}
           {pontos && pontos.length > 0 && (
-            <ul className="mt-7 flex flex-wrap gap-2 lg:mt-8">
+            <ul className="mt-7 grid grid-cols-1 gap-2 sm:grid-cols-3 lg:mt-8">
               {pontos.map((p) => (
                 <li
                   key={p}
-                  className="inline-flex min-h-9 items-center gap-2 rounded-full bg-white/10 py-1.5 pr-3.5 pl-2 text-small text-white ring-1 ring-white/15 backdrop-blur-sm"
+                  className="flex h-full min-h-11 items-center gap-2.5 rounded-[14px] bg-white/10 py-2 pr-3 pl-2.5 text-small leading-5 text-white ring-1 ring-white/15 backdrop-blur-sm"
                 >
                   <span aria-hidden className="grid size-5 shrink-0 place-items-center rounded-full bg-brand-light text-navy">
                     <Check className="size-3" strokeWidth={3.5} />
