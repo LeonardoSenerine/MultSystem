@@ -4,50 +4,63 @@ import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Avaliacao } from "@/types";
 
-const LIMITE_RESUMO = 140;
-
 function Estrelas() {
   return (
     <span className="flex gap-0.5" role="img" aria-label="5 de 5 estrelas">
       {Array.from({ length: 5 }, (_, i) => (
-        <Star key={i} aria-hidden className="size-4 fill-amber text-amber" />
+        <Star key={i} aria-hidden className="size-3.5 fill-amber text-amber" />
       ))}
     </span>
   );
 }
 
+/** Cartão compacto: estrelas e tempo na primeira linha, texto em até 3 linhas ("Ler mais" só se foi cortado) e o nome embaixo. */
 function Cartao({ a }: { a: Avaliacao }) {
+  const citacao = useRef<HTMLQuoteElement>(null);
   const [aberto, setAberto] = useState(false);
-  const longo = a.texto.length > LIMITE_RESUMO;
-  const texto = longo && !aberto ? `${a.texto.slice(0, LIMITE_RESUMO).trimEnd()}…` : a.texto;
+  const [cortado, setCortado] = useState(false);
+
+  // Descobre se o texto passou de 3 linhas (depende da largura do cartão, por isso mede e acompanha o redimensionamento).
+  useEffect(() => {
+    const el = citacao.current;
+    if (!el) return;
+    const observador = new ResizeObserver(() => {
+      if (!el.classList.contains("line-clamp-3")) return;
+      setCortado(el.scrollHeight > el.clientHeight + 1);
+    });
+    observador.observe(el);
+    return () => observador.disconnect();
+  }, [aberto]);
 
   return (
-    <figure className="flex h-full flex-col rounded-card border border-line bg-white p-5 lg:p-6">
-      <Estrelas />
-      <blockquote className="mt-3 flex-1 text-body text-ink">&ldquo;{texto}&rdquo;</blockquote>
-      {longo && (
+    <figure className="flex h-full flex-col rounded-card border border-line bg-white p-4 lg:p-5">
+      <div className="flex items-center justify-between gap-3">
+        <Estrelas />
+        <span className="text-[12px] leading-4 text-muted">
+          <span className="sr-only">Avaliação no {a.origem}, </span>
+          {a.quando}
+        </span>
+      </div>
+      <blockquote ref={citacao} className={`mt-2.5 text-small text-ink ${aberto ? "" : "line-clamp-3"}`}>
+        &ldquo;{a.texto}&rdquo;
+      </blockquote>
+      {(cortado || aberto) && (
         <button
           type="button"
           onClick={() => setAberto((v) => !v)}
           aria-expanded={aberto}
-          className="mt-1 inline-flex min-h-11 items-center self-start text-[14px] font-bold text-brand hover:underline"
+          className="inline-flex min-h-11 items-center self-start text-[13px] font-bold text-brand hover:underline"
         >
           {aberto ? "Ler menos" : "Ler mais"}
         </button>
       )}
-      <figcaption className="mt-3 text-small text-muted">
+      <figcaption className="mt-auto flex flex-wrap items-center gap-x-2 gap-y-1 pt-3 text-small">
         <span className="font-bold text-ink">{a.nome}</span>
-        {a.localGuide && <span className="ml-1.5 rounded-full bg-tint px-2 py-0.5 text-[12px] font-semibold text-brand">Local Guide</span>}
-        <span className="mt-0.5 block text-[13px]">
-          <span className="sr-only">Avaliação no </span>
-          {a.origem}
-          {a.quando ? ` · ${a.quando}` : ""}
-        </span>
+        {a.localGuide && <span className="rounded-full bg-tint px-2 py-0.5 text-[11px] leading-4 font-semibold text-brand">Local Guide</span>}
       </figcaption>
     </figure>
   );
 }
-
 /**
  * Avaliações em fila que desliza para o lado (com a mão, no celular; com as setas ou a roda do mouse, no
  * computador). Mostra 1 cartão e meio no celular, 2 no tablet e 3 no desktop.
