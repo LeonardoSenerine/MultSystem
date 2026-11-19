@@ -1,3 +1,4 @@
+import { FundoOndas } from "@/components/FundoOndas";
 import { CartoesTipoOrcamento } from "@/components/orcamento/CartoesTipoOrcamento";
 import { Reveal } from "@/components/Reveal";
 import { getContato } from "@/lib/dados";
@@ -10,7 +11,9 @@ export function TiposOrcamento() {
   const contato = getContato();
 
   return (
-    <section id="tipos-orcamento" aria-labelledby="tipos-titulo" className="section-y">
+    // Mesmo fundo de ondas do Sobre da home e da assistência.
+    <section id="tipos-orcamento" aria-labelledby="tipos-titulo" className="relative isolate overflow-hidden section-y">
+      <FundoOndas />
       <Reveal className="container-site">
         <div className="max-w-[60ch]">
           <p className="text-eyebrow text-brand">Orçamento para empresa</p>

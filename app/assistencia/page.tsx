@@ -4,6 +4,7 @@ import { Button } from "@/components/Button";
 import { FormularioTecnico } from "@/components/assistencia/FormularioTecnico";
 import { CabecalhoPagina } from "@/components/CabecalhoPagina";
 import { Faq } from "@/components/Faq";
+import { FundoOndas } from "@/components/FundoOndas";
 import { Reveal } from "@/components/Reveal";
 import { perguntasAssistencia } from "@/data/faq-assistencia";
 import { getContato } from "@/lib/dados";
@@ -37,7 +38,9 @@ export default function AssistenciaPage() {
       </CabecalhoPagina>
 
       {/* Fale com o técnico: texto à esquerda, formulário à direita. */}
-      <section id="fale-com-o-tecnico" aria-labelledby="tecnico-titulo" className="section-y">
+      {/* Mesmo fundo de ondas do Sobre da home (topo à direita e, invertidas, embaixo à esquerda). */}
+      <section id="fale-com-o-tecnico" aria-labelledby="tecnico-titulo" className="relative isolate overflow-hidden section-y">
+        <FundoOndas />
         <div className="container-site grid gap-8 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
           <Reveal>
             <p className="text-eyebrow text-brand">Fale com o técnico</p>
