@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { FundoOndas } from "@/components/FundoOndas";
 import { CartoesTipoOrcamento } from "@/components/orcamento/CartoesTipoOrcamento";
 import { Reveal } from "@/components/Reveal";
@@ -6,8 +7,9 @@ import { getContato } from "@/lib/dados";
 /**
  * Os tipos de orçamento em cards (ideia reaproveitada do site atual, que cotava por área).
  * Cada card abre um modal com o formulário daquele tipo, sem sair do lugar na página.
+ * `children` entra no fim da mesma seção (em /empresas, o carrossel de marcas), para o fundo de ondas cobrir os dois.
  */
-export function TiposOrcamento() {
+export function TiposOrcamento({ children }: { children?: ReactNode }) {
   const contato = getContato();
 
   return (
@@ -27,6 +29,7 @@ export function TiposOrcamento() {
 
         <CartoesTipoOrcamento whatsapp={contato.whatsapp.replace(/\D/g, "")} />
       </Reveal>
+      {children && <div className="container-site">{children}</div>}
     </section>
   );
 }

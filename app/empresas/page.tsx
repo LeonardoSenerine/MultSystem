@@ -113,11 +113,10 @@ export default function EmpresasPage() {
         </div>
       </section>
 
-      <TiposOrcamento />
-
-      <div className="container-site pb-16 lg:pb-24">
+      {/* As marcas ficam dentro da seção dos tipos de orçamento, para o fundo de ondas cobrir as duas. */}
+      <TiposOrcamento>
         <MarcasMarquee />
-      </div>
+      </TiposOrcamento>
 
       <CtaOrcamento />
 
