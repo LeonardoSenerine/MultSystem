@@ -95,6 +95,11 @@ export type Avaliacao = {
   nome: string;
   texto: string;
   origem: "Google" | "Mercado Livre";
+  /** Texto relativo mostrado pelo Google na data da cópia ("4 anos atrás"). */
+  quando?: string;
+  /** Selo "Local Guide" do Google. */
+  localGuide?: boolean;
+  /** Texto de exemplo: nunca aparece no site. */
   exemplo?: boolean;
 };
 

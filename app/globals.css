@@ -681,10 +681,24 @@
   .alinha-esquerda {
     left: max(1.5rem, calc((100% - 1200px) / 2 + 24px)) !important;
   }
+  /*
+   * O botão do WhatsApp não pode ficar em cima do conteúdo (cobria "Adicionar", "Solicitar cotação" etc.).
+   * Telas de 1024 a 1399 px: botão menor (48 px), encostado a 8 px da borda; em 1280 px o conteúdo termina
+   * 64 px antes da borda, então ele cabe na margem. De 1400 px para cima: botão de 64 px na margem, ao lado
+   * do container de 1200 px. Abaixo de ~1250 px não há margem e ele fica sobre o canto, como em qualquer site.
+   */
   .alinha-direita {
-    right: max(1.5rem, calc((100% - 1200px) / 2 + 24px)) !important;
+    right: 0.5rem !important;
   }
-  /* Aviso de cookies no canto direito (o texto e os botões do topo ficam à esquerda), deixando a vaga do botão do WhatsApp. */
+}
+
+@media (width >= 87.5rem) {
+  .alinha-direita {
+    right: max(1rem, calc((100% - 1200px) / 2 - 80px)) !important;
+  }
+}
+
+@media (width >= 64rem) {  /* Aviso de cookies no canto direito (o texto e os botões do topo ficam à esquerda), deixando a vaga do botão do WhatsApp. */
   .cookie-direita {
     left: auto !important;
     right: max(6.5rem, calc(50% - 576px + 5rem)) !important;

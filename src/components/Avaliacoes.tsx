@@ -1,5 +1,7 @@
 import { Star } from "lucide-react";
+import { CarrosselAvaliacoes } from "@/components/CarrosselAvaliacoes";
 import { Reveal } from "@/components/Reveal";
+import { DATA_DA_COPIA_DAS_AVALIACOES } from "@/data/avaliacoes";
 import { getAvaliacoes, getContato } from "@/lib/dados";
 
 function Estrelas() {
@@ -57,36 +59,44 @@ export function Avaliacoes() {
 
   return (
     <Reveal className="mt-20 lg:mt-32">
-      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-2">
-        <h3 id="avaliacoes-titulo" className="text-h2 text-ink">
-          Quem compra, recomenda
-        </h3>
-        <a
-          href={contato.mercadoLivreUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex min-h-11 items-center text-[15px] leading-5 font-bold text-brand hover:underline"
-        >
-          Ver avaliações no Mercado Livre
-        </a>
+      <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-3">
+        <div>
+          <Estrelas />
+          <h3 id="avaliacoes-titulo" className="mt-3 text-h2 text-ink">
+            Quem compra, recomenda
+          </h3>
+          <p className="mt-2 max-w-[56ch] text-body text-muted">
+            {avaliacoes.length} avaliações de clientes no Google, todas com 5 estrelas. Veja também a nossa loja oficial no Mercado Livre
+            (nota {contato.mercadoLivreNota}).
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-x-5">
+          <a
+            href={contato.googleAvaliacoesUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 items-center text-[15px] leading-5 font-bold text-brand hover:underline"
+          >
+            Ver no Google
+          </a>
+          <a
+            href={contato.mercadoLivreUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex min-h-11 items-center text-[15px] leading-5 font-bold text-brand hover:underline"
+          >
+            Ver no Mercado Livre
+          </a>
+        </div>
       </div>
 
-      <ul className="mt-5 grid gap-3 md:grid-cols-3 lg:mt-8 lg:gap-6" aria-labelledby="avaliacoes-titulo">
-        {avaliacoes.map((a, i) => (
-          <Reveal as="li" key={a.nome} atraso={i * 90}>
-            <figure className="flex h-full flex-col rounded-card border border-line bg-white p-5 lg:p-6">
-              <Estrelas />
-              <blockquote className="mt-3 flex-1 text-body text-ink">&ldquo;{a.texto}&rdquo;</blockquote>
-              <figcaption className="mt-4 text-small text-muted">
-                <span className="font-bold text-ink">{a.nome}</span>
-                <span aria-hidden> · </span>
-                <span className="sr-only">, avaliação no </span>
-                {a.origem}
-              </figcaption>
-            </figure>
-          </Reveal>
-        ))}
-      </ul>
+      <div className="mt-5 lg:mt-8">
+        <CarrosselAvaliacoes avaliacoes={avaliacoes} />
+      </div>
+
+      <p className="mt-3 text-[13px] leading-[18px] text-muted">
+        Avaliações públicas do Google, copiadas em {DATA_DA_COPIA_DAS_AVALIACOES}. O tempo de cada uma (&ldquo;4 anos atrás&rdquo;) é o que o Google mostrava nessa data.
+      </p>
     </Reveal>
   );
 }

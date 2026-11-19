@@ -38,10 +38,10 @@ export function WhatsAppFab({ href }: { href: string }) {
       data-visible={visivel}
       aria-hidden={!visivel}
       tabIndex={visivel ? 0 : -1}
-      className="fab alinha-direita fixed right-4 bottom-4 z-30 flex size-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-card hover:bg-[#1fbe5a] lg:bottom-8 lg:size-16"
+      className="fab alinha-direita fixed right-4 bottom-4 z-30 flex size-14 items-center justify-center rounded-full bg-whatsapp text-white shadow-card hover:bg-[#1fbe5a] lg:bottom-8 lg:size-12 min-[1400px]:size-16"
       style={{ marginBottom: "env(safe-area-inset-bottom)" }}
     >
-      <WhatsAppIcon className="size-7 lg:size-8" />
+      <WhatsAppIcon className="size-7 lg:size-6 min-[1400px]:size-8" />
     </a>
   );
 }
