@@ -18,9 +18,8 @@ export function Categorias() {
     <section id="categorias" aria-labelledby="categorias-titulo" className="section-y">
       <div className="container-site">
         <Reveal>
-          <p className="text-eyebrow text-brand">Categorias</p>
-          <h2 id="categorias-titulo" className="mt-2 text-h2 text-ink">
-            O que você procura?
+          <h2 id="categorias-titulo" className="text-h2 text-ink">
+            Departamentos
           </h2>
         </Reveal>
 

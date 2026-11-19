@@ -114,9 +114,11 @@ export function Seletor({
         aria-controls={`${id}-lista`}
         aria-labelledby={`${id}-rotulo ${id}-valor`}
         aria-describedby={erro ? idErro : undefined}
-        className={`${classeCampo} flex h-12 min-w-0 cursor-pointer items-center gap-2 text-left ${erro ? "border-red-600 bg-red-50/40" : ""} ${aberto ? "border-brand" : ""}`}
+        // Grade com a 1ª coluna minmax(0,1fr): o texto (que não quebra linha) não "empurra" a largura mínima do
+        // formulário. Com flex, numa tela estreita ele esticava a seção e criava rolagem lateral.
+        className={`${classeCampo} grid h-12 min-w-0 cursor-pointer grid-cols-[minmax(0,1fr)_auto_auto] items-center gap-2 text-left ${erro ? "border-red-600 bg-red-50/40" : ""} ${aberto ? "border-brand" : ""}`}
       >
-        <span id={`${id}-valor`} className={`min-w-0 flex-1 truncate ${resumo ? "font-semibold text-ink" : "text-[#7d89a6]"}`}>
+        <span id={`${id}-valor`} className={`truncate ${resumo ? "font-semibold text-ink" : "text-[#7d89a6]"}`}>
           {resumo ?? vazio}
         </span>
         {multiplo && escolhidas.length > 1 && (

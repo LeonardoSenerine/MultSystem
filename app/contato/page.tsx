@@ -42,7 +42,7 @@ export default function ContatoPage() {
           <div>
             <Reveal>
               <h2 id="canais-titulo" className="text-h2 text-balance text-ink">
-                Escolha o jeito mais fácil para você
+                Canais de atendimento
               </h2>
               <p className="mt-4 max-w-[44ch] text-body-lg text-muted">{contato.horario}</p>
             </Reveal>

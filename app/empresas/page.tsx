@@ -66,7 +66,7 @@ export default function EmpresasPage() {
           <Reveal className="max-w-[60ch]">
             <p className="text-eyebrow text-brand">Como funciona</p>
             <h2 id="como-titulo" className="mt-2 text-h2 text-balance text-ink">
-              Da cotação à entrega, em quatro passos
+              Do pedido de cotação até a entrega
             </h2>
           </Reveal>
           <ol className="mt-8 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:mt-12 lg:grid-cols-4">
@@ -88,7 +88,7 @@ export default function EmpresasPage() {
           <Reveal>
             <p className="text-eyebrow text-brand-light">Por que comprar aqui</p>
             <h2 id="diferenciais-titulo" className="mt-3 text-h2 text-balance">
-              O que muda quando quem compra é a empresa
+              Condições para quem compra com CNPJ
             </h2>
             <p className="mt-4 max-w-[44ch] text-body-lg text-white/85">
               Vender para empresas é a nossa especialidade. O atendimento é pensado para quem precisa decidir rápido e comprar certo.

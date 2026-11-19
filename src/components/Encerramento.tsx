@@ -21,9 +21,8 @@ export function Encerramento() {
       <div className="container-site">
         <Reveal className="grid grid-cols-1 gap-10 rounded-photo bg-tint p-6 sm:p-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:items-center lg:gap-16 lg:p-16">
           <div>
-            <p className="text-eyebrow text-brand">Ainda ficou alguma dúvida?</p>
-            <h2 id="encerramento-titulo" className="mt-2 max-w-[18ch] text-display text-balance text-ink">
-              Fale com a gente. Quem atende é quem vende.
+            <h2 id="encerramento-titulo" className="max-w-[18ch] text-display text-balance text-ink">
+              Ficou com dúvida? Fale com a gente.
             </h2>
             <p className="mt-5 max-w-[46ch] text-body-lg text-muted">
               Chame no WhatsApp, ligue ou passe na loja. Você explica o que precisa e a gente diz, sem rodeio, o que vale a pena.
