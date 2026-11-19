@@ -2,7 +2,8 @@
  * Fundo decorativo de ondas suaves (feito em SVG, sem imagem): camadas em azul-claro da marca que descem do
  * canto de cima à direita e sobem do canto de baixo à esquerda, deixando o centro limpo para o conteúdo.
  * Cada canto é uma peça com proporção fixa (não estica com a seção, então não distorce) e com largura
- * relativa à tela, para aparecer bem também no celular. A peça de baixo some num degradê, sem corte seco.
+ * relativa à tela, para aparecer bem também no celular. Na home cobre a faixa inteira (Sobre, marcas e
+ * avaliações): ondas no topo à direita e, invertidas, no fim à esquerda.
  * Uso: dentro de um elemento `relative isolate overflow-hidden`.
  */
 function Canto({ className = "" }: { className?: string }) {
@@ -30,11 +31,12 @@ export function FundoOndas() {
 
       {/* Só no celular/tablet, onde a foto cobre o canto de cima: uma onda a mais ao lado do texto, surgindo
           num degradê (o topo reto da peça fica invisível). */}
-      <div className="absolute top-[44%] right-0 w-[88%] [mask-image:linear-gradient(to_bottom,transparent,#000_45%)] sm:w-[60%] lg:hidden">
+      <div className="absolute top-[24%] right-0 w-[88%] [mask-image:linear-gradient(to_bottom,transparent,#000_45%)] sm:w-[60%] lg:hidden">
         <Canto />
       </div>
 
-      <div className="absolute bottom-0 left-0 w-[96%] max-w-[860px] [mask-image:linear-gradient(to_top,transparent,#000_40%)] sm:w-[70%] lg:w-[50%]">
+      {/* Embaixo, invertida: a mesma peça girada 180°, saindo do canto de baixo à esquerda. */}
+      <div className="absolute bottom-0 left-0 w-[96%] max-w-[860px] sm:w-[70%] lg:w-[52%]">
         <Canto className="rotate-180" />
       </div>
     </div>

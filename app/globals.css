@@ -335,6 +335,15 @@
   animation: marquee 22s linear infinite;
 }
 
+/* Variante das avaliações: bem mais lenta (dá para ler) e para quando o mouse ou o foco está em cima. */
+.marquee-track.marquee-lento {
+  animation-duration: 120s;
+}
+.marquee-pausa:hover .marquee-track,
+.marquee-pausa:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
 @keyframes marquee {
   from {
     transform: translateX(0);

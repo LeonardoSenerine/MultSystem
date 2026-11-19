@@ -26,13 +26,10 @@ export default function Home() {
       <Assistencia />
 
       {/* Sobre a empresa, marcas e avaliações numa faixa tint só. */}
-      <section id="sobre" aria-labelledby="sobre-titulo" className="bg-tint pb-10 lg:pb-24">
-        {/* Bloco "Sobre" com o fundo de ondas suaves; ele se dissolve no tint embaixo, antes das marcas. */}
-        <div className="relative isolate overflow-hidden pt-16 pb-6 lg:pt-24 lg:pb-8">
-          <FundoOndas />
-          <span aria-hidden className="absolute inset-x-0 bottom-0 -z-10 h-24 bg-gradient-to-b from-transparent to-tint" />
-          <Sobre />
-        </div>
+      {/* Fundo de ondas na faixa inteira: no topo à direita e, invertidas, embaixo à esquerda. */}
+      <section id="sobre" aria-labelledby="sobre-titulo" className="relative isolate overflow-hidden bg-tint pt-16 pb-16 lg:pt-24 lg:pb-32">
+        <FundoOndas />
+        <Sobre />
         <div className="container-site">
           <MarcasMarquee />
           <Avaliacoes />
