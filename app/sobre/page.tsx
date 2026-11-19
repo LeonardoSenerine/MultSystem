@@ -41,7 +41,6 @@ export default function SobrePage() {
   return (
     <>
       <CabecalhoPagina
-        eyebrow="Desde 1995"
         titulo="Sobre a Multsystems"
         texto="Loja de informática no Centro de Itatiba, com atendimento de balcão e foco em quem compra para a empresa."
         imagem={{ src: "/img/fachada-noite.jpg", posicao: "center 45%", lado: true }}

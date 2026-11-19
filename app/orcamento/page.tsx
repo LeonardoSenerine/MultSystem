@@ -14,7 +14,6 @@ export default function OrcamentoPage() {
   return (
     <>
       <CabecalhoPagina
-        eyebrow="Orçamento"
         titulo="Pedir orçamento"
         texto="Conte o que precisa e a gente responde com preço, prazo e condição, sempre com nota fiscal. Vale para empresa e para casa."
         imagem={{ src: "/img/caminhos/empresa.jpg", posicao: "center 35%" }}

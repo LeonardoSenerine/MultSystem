@@ -32,7 +32,6 @@ export default function ContatoPage() {
   return (
     <>
       <CabecalhoPagina
-        eyebrow="Fale com a gente"
         titulo="Contato"
         texto="WhatsApp, telefone ou na loja: quem atende é quem vende. Escolha o canal mais fácil e conte o que você precisa."
         imagem={{ src: "/img/caminhos/casa.jpg", posicao: "center 30%" }}

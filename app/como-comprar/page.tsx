@@ -46,7 +46,6 @@ export default function ComoComprarPage() {
   return (
     <>
       <CabecalhoPagina
-        eyebrow="Compre com tranquilidade"
         titulo="Como comprar, pagar e receber"
         texto="Do site ao balcão em quatro passos. Aqui estão o pagamento, a entrega, a nota fiscal e o que fazer se algo não sair como esperado."
         imagem={{ src: "/img/caminhos/casa.jpg", posicao: "center 30%" }}

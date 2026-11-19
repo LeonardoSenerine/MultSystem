@@ -23,7 +23,6 @@ export default function AssistenciaPage() {
   return (
     <>
       <CabecalhoPagina
-        eyebrow="Total Tech, dentro da nossa loja"
         titulo="Assistência técnica"
         texto="Notebook, computador e nobreak. Você conta o problema, o técnico faz a avaliação (paga) e envia o orçamento do conserto. O serviço só começa se você aprovar."
         imagem={{ src: "/img/caminhos/assistencia.jpg", posicao: "center 45%" }}

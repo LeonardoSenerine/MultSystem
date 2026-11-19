@@ -41,7 +41,6 @@ export default function EmpresasPage() {
   return (
     <>
       <CabecalhoPagina
-        eyebrow="Atendimento B2B"
         titulo="Informática para a sua empresa"
         texto="Cotação com nota fiscal, condição especial para compra recorrente e um vendedor que acompanha o pedido do começo ao fim."
         imagem={{ src: "/img/categorias/wifi.jpg", posicao: "center 40%" }}
