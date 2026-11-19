@@ -10,8 +10,9 @@ export type OpcaoSeletor = { valor: string; rotulo: string };
  * Campo que abre uma lista de opções e guarda só um resumo da escolha dentro do botão (no lugar de mostrar
  * todas as opções de uma vez). `multiplo` deixa marcar várias; sem ele, escolher uma já fecha a lista.
  *
- * A lista abre DENTRO do fluxo da página (empurra os campos de baixo), e não flutuando por cima: assim ela
- * nunca sai do cartão do formulário nem cobre a seção seguinte, em qualquer largura de tela.
+ * A lista FLUTUA por cima do conteúdo (não empurra nem estica o formulário). Ao abrir, mede o espaço livre na
+ * janela: abre para baixo se couber e, se não couber, para cima; a altura máxima é limitada ao espaço que sobra,
+ * então a lista nunca fica cortada pela borda da tela.
  * Ao abrir, as opções já escolhidas sobem para o topo (com fundo destacado e uma linha separando das outras).
  * A ordem é fixada na hora de abrir, para os itens não pularem de lugar debaixo do dedo enquanto a pessoa marca.
  * Usa radios/checkboxes de verdade, então teclado (Tab, setas, espaço) e leitor de tela funcionam.
@@ -47,6 +48,8 @@ export function Seletor({
   // Ordem da lista, montada ao abrir: escolhidas primeiro (na ordem original), depois as demais.
   const [ordem, setOrdem] = useState<OpcaoSeletor[]>(opcoes);
   const [qtdNoTopo, setQtdNoTopo] = useState(0);
+  // Para onde a lista abre e quanto ela pode crescer (em px), calculado na hora de abrir.
+  const [posicao, setPosicao] = useState<{ paraCima: boolean; altura: number }>({ paraCima: false, altura: 280 });
   const raiz = useRef<HTMLDivElement>(null);
   const botao = useRef<HTMLButtonElement>(null);
 
@@ -74,6 +77,17 @@ export function Seletor({
       const escolhidas = opcoes.filter((o) => valor.includes(o.valor));
       setOrdem([...escolhidas, ...opcoes.filter((o) => !valor.includes(o.valor))]);
       setQtdNoTopo(escolhidas.length);
+      // Espaço livre abaixo e acima do botão (descontando o cabeçalho fixo, ~80 px, e uma folga de 12 px).
+      const r = botao.current?.getBoundingClientRect();
+      if (r) {
+        const rodape = multiplo ? 52 : 0; // barra "Limpar / Pronto"
+        const ideal = Math.min(280, opcoes.length * 46 + 12) + rodape;
+        const abaixo = window.innerHeight - r.bottom - 12;
+        const acima = r.top - 80 - 12;
+        const paraCima = abaixo < Math.min(ideal, 240) && acima > abaixo;
+        const livre = paraCima ? acima : abaixo;
+        setPosicao({ paraCima, altura: Math.max(160, Math.min(280, livre - rodape)) });
+      }
     }
     setAberto((v) => !v);
   };
@@ -105,6 +119,8 @@ export function Seletor({
         {extra && <span className="shrink-0 text-[12px] leading-4 font-medium text-muted">{extra}</span>}
       </div>
 
+      {/* Âncora da lista: só o botão, para ela abrir colada nele (para baixo ou para cima). */}
+      <div className="relative min-w-0">
       <button
         ref={botao}
         type="button"
@@ -135,9 +151,11 @@ export function Seletor({
           id={`${id}-lista`}
           role="group"
           aria-labelledby={`${id}-rotulo`}
-          className="mt-1.5 overflow-hidden rounded-btn border border-[#cfd8ec] bg-white text-ink shadow-[0_6px_18px_rgb(28_47_92/0.10)]"
+          className={`absolute inset-x-0 z-40 overflow-hidden rounded-btn border border-[#cfd8ec] bg-white text-ink shadow-[0_16px_40px_rgb(28_47_92/0.22)] ${
+            posicao.paraCima ? "bottom-full mb-1.5" : "top-full mt-1.5"
+          }`}
         >
-          <ul className="max-h-[17.5rem] overflow-y-auto overscroll-contain p-1.5">
+          <ul style={{ maxHeight: posicao.altura }} className="overflow-y-auto overscroll-contain p-1.5">
             {ordem.map((o, i) => {
               const marcado = valor.includes(o.valor);
               // Linha fina entre o grupo das escolhidas (no topo) e o resto da lista.
@@ -200,6 +218,7 @@ export function Seletor({
           )}
         </div>
       )}
+      </div>
     </div>
   );
 }
