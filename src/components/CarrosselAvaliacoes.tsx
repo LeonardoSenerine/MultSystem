@@ -4,6 +4,9 @@ import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import type { Avaliacao } from "@/types";
 
+/** Tempo entre um cartão e o próximo, quando o carrossel roda sozinho. */
+const INTERVALO = 4500;
+
 function Estrelas() {
   return (
     <span className="flex gap-0.5" role="img" aria-label="5 de 5 estrelas">
@@ -82,6 +85,63 @@ export function CarrosselAvaliacoes({ avaliacoes }: { avaliacoes: Avaliacao[] })
     window.addEventListener("resize", medir);
     return () => window.removeEventListener("resize", medir);
   }, [medir]);
+
+  // Roda sozinho: a cada INTERVALO avança um cartão e, no fim, volta ao começo. Para quando o mouse está em cima,
+  // o foco está dentro, a pessoa toca/rola, a fila está fora da tela ou a aba está escondida. Com "reduzir
+  // movimento" ligado no sistema, não roda.
+  const parado = useRef(false);
+  const visivel = useRef(false);
+  const retomarEm = useRef(0);
+
+  useEffect(() => {
+    const el = trilha.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const observador = new IntersectionObserver(([e]) => (visivel.current = e.isIntersecting), { threshold: 0.3 });
+    observador.observe(el);
+
+    const pausar = (ms = 0) => {
+      parado.current = true;
+      retomarEm.current = ms ? Date.now() + ms : 0;
+    };
+    const liberar = () => {
+      parado.current = false;
+    };
+    // Mouse e teclado: parado enquanto estiver em cima ou com foco. Toque e rolagem manual: pausa por alguns segundos.
+    const aoEntrar = () => pausar();
+    const aoToque = () => pausar(8000);
+    el.addEventListener("mouseenter", aoEntrar);
+    el.addEventListener("mouseleave", liberar);
+    el.addEventListener("focusin", aoEntrar);
+    el.addEventListener("focusout", liberar);
+    el.addEventListener("touchstart", aoToque, { passive: true });
+    el.addEventListener("wheel", aoToque, { passive: true });
+
+    const relogio = window.setInterval(() => {
+      if (document.hidden || !visivel.current) return;
+      if (retomarEm.current && Date.now() >= retomarEm.current) {
+        retomarEm.current = 0;
+        parado.current = false;
+      }
+      if (parado.current) return;
+      const cartoes = el.children;
+      if (cartoes.length < 2) return;
+      const passo = (cartoes[1] as HTMLElement).offsetLeft - (cartoes[0] as HTMLElement).offsetLeft;
+      const noFim = el.scrollLeft + el.clientWidth >= el.scrollWidth - 4;
+      el.scrollTo({ left: noFim ? 0 : el.scrollLeft + passo, behavior: "smooth" });
+    }, INTERVALO);
+
+    return () => {
+      window.clearInterval(relogio);
+      observador.disconnect();
+      el.removeEventListener("mouseenter", aoEntrar);
+      el.removeEventListener("mouseleave", liberar);
+      el.removeEventListener("focusin", aoEntrar);
+      el.removeEventListener("focusout", liberar);
+      el.removeEventListener("touchstart", aoToque);
+      el.removeEventListener("wheel", aoToque);
+    };
+  }, []);
 
   const mover = (direcao: 1 | -1) => {
     const el = trilha.current;

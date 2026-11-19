@@ -1,7 +1,6 @@
 import { Star } from "lucide-react";
 import { CarrosselAvaliacoes } from "@/components/CarrosselAvaliacoes";
 import { Reveal } from "@/components/Reveal";
-import { DATA_DA_COPIA_DAS_AVALIACOES } from "@/data/avaliacoes";
 import { getAvaliacoes, getContato } from "@/lib/dados";
 
 function Estrelas() {
@@ -94,9 +93,6 @@ export function Avaliacoes() {
         <CarrosselAvaliacoes avaliacoes={avaliacoes} />
       </div>
 
-      <p className="mt-3 text-[13px] leading-[18px] text-muted">
-        Avaliações públicas do Google, copiadas em {DATA_DA_COPIA_DAS_AVALIACOES}. O tempo de cada uma (&ldquo;4 anos atrás&rdquo;) é o que o Google mostrava nessa data.
-      </p>
     </Reveal>
   );
 }
