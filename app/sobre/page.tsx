@@ -113,7 +113,7 @@ export default function SobrePage() {
               ))}
             </ul>
 
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Button href="/assistencia" variante="branco" tamanho="lg" className="w-full sm:w-auto">
                 Ver a assistência técnica
               </Button>

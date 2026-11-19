@@ -155,12 +155,14 @@ export function CarrosselAvaliacoes({ avaliacoes }: { avaliacoes: Avaliacao[] })
 
   return (
     <div>
+      {/* "relative" é essencial: os textos só para leitor de tela (sr-only) dos cartões são posicionados de forma absoluta
+          e, sem um ancestral posicionado, escapavam do recorte da fila e esticavam a PÁGINA toda para a direita (+4.400 px). */}
       <ul
         ref={trilha}
         onScroll={medir}
         tabIndex={0}
         aria-label="Avaliações de clientes no Google"
-        className="-mx-4 flex snap-x snap-mandatory scroll-pl-4 items-stretch gap-3 overflow-x-auto px-4 pb-2 md:scroll-pl-6 lg:scroll-pl-0 [scrollbar-width:none] md:-mx-6 md:px-6 lg:mx-0 lg:gap-6 lg:px-0 [&::-webkit-scrollbar]:hidden"
+        className="relative -mx-4 flex snap-x snap-mandatory scroll-pl-4 items-stretch gap-3 overflow-x-auto px-4 pb-2 md:scroll-pl-6 lg:scroll-pl-0 [scrollbar-width:none] md:-mx-6 md:px-6 lg:mx-0 lg:gap-6 lg:px-0 [&::-webkit-scrollbar]:hidden"
       >
         {avaliacoes.map((a) => (
           <li key={a.nome} className="w-[84%] shrink-0 snap-start sm:w-[calc(50%-6px)] lg:w-[calc((100%-48px)/3)]">
