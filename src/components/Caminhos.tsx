@@ -59,25 +59,26 @@ export function Caminhos() {
               <Reveal as="li" key={c.titulo} atraso={i * 110}>
                 <Link
                   href={c.href}
-                  className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-white transition-[transform,box-shadow,border-color] duration-300 ease-out hover:border-[#c7d2ea] lg:hover:-translate-y-0.5 lg:hover:shadow-card"
+                  className="group flex h-full flex-col overflow-hidden rounded-card border border-line bg-white transition-[transform,box-shadow,border-color] duration-300 ease-out hover:border-[#c7d2ea] max-md:flex-row lg:hover:-translate-y-0.5 lg:hover:shadow-card"
                 >
-                  <span className="relative block aspect-[3/2] overflow-hidden bg-tint">
+                  {/* No celular o card vira uma linha (foto pequena + texto), para os 3 caberem numa tela só. */}
+                  <span className="relative block aspect-[3/2] overflow-hidden bg-tint max-md:aspect-auto max-md:w-[104px] max-md:shrink-0">
                     <span className="foto-assenta absolute inset-0">
                       <Image
                         src={c.imagem}
                         alt={c.alt}
                         fill
                         quality={85}
-                        sizes="(min-width: 1200px) 384px, (min-width: 768px) 32vw, 100vw"
+                        sizes="(min-width: 1200px) 384px, (min-width: 768px) 32vw, 104px"
                         className="object-cover transition-transform duration-700 ease-[cubic-bezier(0.22,1,0.36,1)] group-hover:scale-[1.03]"
                       />
                     </span>
                   </span>
 
-                  <span className="flex flex-1 flex-col p-5 lg:p-7">
-                    <h3 className="text-h3 text-ink">{c.titulo}</h3>
-                    <p className="mt-2 flex-1 text-body text-muted">{c.texto}</p>
-                    <span className="mt-6 inline-flex min-h-11 items-center gap-2 self-start text-[15px] leading-5 font-bold text-brand">
+                  <span className="flex min-w-0 flex-1 flex-col p-5 max-md:p-4 lg:p-7">
+                    <h3 className="text-h3 text-ink max-md:text-[17px] max-md:leading-6">{c.titulo}</h3>
+                    <p className="mt-2 flex-1 text-body text-muted max-md:mt-1 max-md:line-clamp-3 max-md:text-small">{c.texto}</p>
+                    <span className="mt-6 max-md:mt-2 inline-flex min-h-11 items-center gap-2 self-start text-[15px] leading-5 font-bold text-brand">
                       {c.acao}
                       <ArrowRight aria-hidden className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
                     </span>

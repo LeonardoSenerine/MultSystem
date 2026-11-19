@@ -65,7 +65,12 @@ export function CardProduto({ produto, preload = false }: { produto: ProdutoCata
           </p>
           <p className="text-[13px] leading-4 text-muted">
             ou {parcelaEm3x(produto.preco)} sem juros
-            {produto.estoque === 1 ? " · última unidade" : produto.estoque > 1 && produto.estoque <= 3 ? ` · últimas ${produto.estoque}` : ""}
+            {/* O aviso de estoque baixo vai numa linha própria: no mesmo parágrafo ele quebrava no meio ("última / unidade"). */}
+            {produto.estoque === 1 ? (
+              <span className="mt-0.5 block font-semibold text-ink">Última unidade</span>
+            ) : produto.estoque > 1 && produto.estoque <= 3 ? (
+              <span className="mt-0.5 block font-semibold text-ink">Últimas {produto.estoque} unidades</span>
+            ) : null}
           </p>
         </div>
 

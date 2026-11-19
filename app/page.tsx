@@ -10,7 +10,6 @@ import { MarcasMarquee } from "@/components/MarcasMarquee";
 import { PerguntasFrequentes } from "@/components/PerguntasFrequentes";
 import { SecaoPromocoes } from "@/components/promocoes/SecaoPromocoes";
 import { Sobre } from "@/components/Sobre";
-import { TiposOrcamento } from "@/components/TiposOrcamento";
 import { VisiteLoja } from "@/components/VisiteLoja";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
@@ -34,7 +33,7 @@ export default function Home() {
         </div>
       </section>
 
-      <TiposOrcamento />
+      {/* Um só pedido de orçamento na home. Os 8 tipos em cards (com modal) ficam em /empresas. */}
       <CtaOrcamento />
       <VisiteLoja />
       <PerguntasFrequentes />
