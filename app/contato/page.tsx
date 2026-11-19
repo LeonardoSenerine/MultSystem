@@ -3,6 +3,7 @@ import { ArrowUpRight } from "lucide-react";
 import { CabecalhoPagina } from "@/components/CabecalhoPagina";
 import { FormularioContato } from "@/components/contato/FormularioContato";
 import { FundoOndas } from "@/components/FundoOndas";
+import { HorarioTexto } from "@/components/loja/HorarioTexto";
 import { PerguntasFrequentes } from "@/components/PerguntasFrequentes";
 import { Reveal } from "@/components/Reveal";
 import { VisiteLoja } from "@/components/VisiteLoja";
@@ -47,7 +48,9 @@ export default function ContatoPage() {
               <h2 id="canais-titulo" className="text-h2 text-balance text-ink">
                 Escolha o jeito mais fácil para você
               </h2>
-              <p className="mt-4 max-w-[44ch] text-body-lg text-muted">{contato.horario}</p>
+              <p className="mt-4 max-w-[44ch] text-body-lg text-muted">
+                <HorarioTexto />
+              </p>
             </Reveal>
             <ul className="mt-8 divide-y divide-line border-y border-line">
               {canais.map((c, i) => (

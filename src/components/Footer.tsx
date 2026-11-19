@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowUp } from "lucide-react";
 import { BotaoCookies } from "@/components/cookies/BotaoCookies";
 import { ElipseMarca } from "@/components/Hero";
+import { HorarioTexto } from "@/components/loja/HorarioTexto";
 import { Logo } from "@/components/Logo";
 import { departamentos } from "@/data/departamentos";
 import { getContato } from "@/lib/dados";
@@ -105,7 +106,9 @@ export function Footer() {
               </a>
             </li>
             <li className="pt-3 text-white/80">{contato.endereco}</li>
-            <li className="pt-2 text-white/80">{contato.horario}</li>
+            <li className="pt-2 text-white/80">
+              <HorarioTexto />
+            </li>
           </ul>
         </div>
       </div>

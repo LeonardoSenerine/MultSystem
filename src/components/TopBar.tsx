@@ -1,3 +1,4 @@
+import { HorarioTexto } from "@/components/loja/HorarioTexto";
 import type { Contato } from "@/types";
 
 /** Faixa de atendimento (só desktop). Texto simples com separadores, sem ícones. */
@@ -6,7 +7,9 @@ export function TopBar({ contato }: { contato: Contato }) {
     <div className="on-dark hidden bg-navy text-white lg:block">
       <div className="container-site flex h-11 items-center justify-between text-small">
         <ul className="flex items-center text-white/85 [&>li]:flex [&>li]:items-center [&>li+li]:before:mx-3 [&>li+li]:before:text-white/35 [&>li+li]:before:content-['·']">
-          <li>{contato.horario}</li>
+          <li>
+            <HorarioTexto />
+          </li>
           <li>
             <a href={contato.telefoneLink} className="inline-flex min-h-11 items-center hover:text-white">
               {contato.telefone}

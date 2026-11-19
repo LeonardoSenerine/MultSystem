@@ -1,4 +1,4 @@
-import { funcionamento } from "@/data/horario-loja";
+import { ULTIMO_SABADO_ISO, funcionamento, sabado } from "@/data/horario-loja";
 import { getContato } from "@/lib/dados";
 import { SITE_URL, urlDoSite } from "@/lib/site";
 
@@ -33,14 +33,24 @@ export function DadosEstruturados() {
       addressRegion: "SP",
       addressCountry: "BR",
     },
-    openingHoursSpecification: funcionamento
-      .filter((f) => f.abre !== undefined && f.fecha !== undefined)
-      .map((f) => ({
+    openingHoursSpecification: [
+      ...funcionamento
+        .filter((f) => f.abre !== undefined && f.fecha !== undefined)
+        .map((f) => ({
+          "@type": "OpeningHoursSpecification",
+          dayOfWeek: f.dias.map((d) => dias[d]),
+          opens: hhmm(f.abre!),
+          closes: hhmm(f.fecha!),
+        })),
+      // Sábado vale só até 12/12/2026 ("validThrough"); depois o Google entende que a loja não abre aos sábados.
+      {
         "@type": "OpeningHoursSpecification",
-        dayOfWeek: f.dias.map((d) => dias[d]),
-        opens: hhmm(f.abre!),
-        closes: hhmm(f.fecha!),
-      })),
+        dayOfWeek: sabado.dias.map((d) => dias[d]),
+        opens: hhmm(sabado.abre!),
+        closes: hhmm(sabado.fecha!),
+        validThrough: ULTIMO_SABADO_ISO,
+      },
+    ],
     sameAs: [contato.instagramUrl, contato.mercadoLivreUrl],
   };
 

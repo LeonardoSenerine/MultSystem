@@ -72,7 +72,6 @@ export function Header() {
             whatsappHref={whatsappHref}
             telefone={contato.telefone}
             telefoneLink={contato.telefoneLink}
-            horario={contato.horario}
           />
         </div>
       </HeaderShell>

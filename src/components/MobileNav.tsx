@@ -7,6 +7,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { Button } from "@/components/Button";
 import { WhatsAppIcon } from "@/components/icones-marca";
 import { Logo } from "@/components/Logo";
+import { HorarioTexto } from "@/components/loja/HorarioTexto";
 import type { LinkNav } from "@/types";
 
 type MobileNavProps = {
@@ -14,14 +15,13 @@ type MobileNavProps = {
   whatsappHref: string;
   telefone: string;
   telefoneLink: string;
-  horario: string;
 };
 
 const iconeBotao =
   "inline-flex size-11 items-center justify-center rounded-btn text-ink transition-colors hover:bg-tint";
 
 /** Ícones do topo no celular + menu em tela cheia. */
-export function MobileNav({ links, whatsappHref, telefone, telefoneLink, horario }: MobileNavProps) {
+export function MobileNav({ links, whatsappHref, telefone, telefoneLink }: MobileNavProps) {
   const [aberto, setAberto] = useState(false);
   const fecharRef = useRef<HTMLButtonElement>(null);
   const abrirRef = useRef<HTMLButtonElement>(null);
@@ -126,7 +126,9 @@ export function MobileNav({ links, whatsappHref, telefone, telefoneLink, horario
               <a href={telefoneLink} className="flex min-h-11 items-center font-bold text-ink">
                 {telefone}
               </a>
-              <span>{horario}</span>
+              <span>
+                <HorarioTexto />
+              </span>
             </div>
           </div>
         </div>

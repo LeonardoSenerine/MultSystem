@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { NOMES_DIAS, faixaDoDia, funcionamento, horaTexto } from "@/data/horario-loja";
+import { NOMES_DIAS, faixaDoDia, funcionamentoEm, horaTexto, sabadoAberto, type FaixaHorario } from "@/data/horario-loja";
 
 /** Minuto atual (como número, estável dentro do minuto) para o React reler a cada 30 s. */
 function assinar(avisar: () => void) {
@@ -25,10 +25,13 @@ function emBrasilia(minuto: number) {
   return { dia, minutos: Number(pegar("hour")) * 60 + Number(pegar("minute")) };
 }
 
-function proximaAbertura(dia: number, minutos: number) {
+/** Tabela de horários válida no minuto dado (com sábado até 12/12/2026). Sem minuto (servidor): a padrão. */
+const tabelaEm = (minuto: number) => funcionamentoEm(minuto ? sabadoAberto(minuto * 60_000) : false);
+
+function proximaAbertura(dia: number, minutos: number, tabela: readonly FaixaHorario[]) {
   for (let i = 0; i < 7; i++) {
     const d = (dia + i) % 7;
-    const faixa = faixaDoDia(d);
+    const faixa = faixaDoDia(d, tabela);
     if (faixa?.abre === undefined) continue;
     if (i === 0 && minutos >= faixa.abre) continue;
     const quando = i === 0 ? "hoje" : i === 1 ? "amanhã" : NOMES_DIAS[d];
@@ -41,7 +44,8 @@ function proximaAbertura(dia: number, minutos: number) {
 export function StatusAgora({ className = "" }: { className?: string }) {
   const minuto = useSyncExternalStore(assinar, minutoAtual, noServidor);
   const agora = minuto ? emBrasilia(minuto) : null;
-  const faixaHoje = agora ? faixaDoDia(agora.dia) : undefined;
+  const tabela = tabelaEm(minuto);
+  const faixaHoje = agora ? faixaDoDia(agora.dia, tabela) : undefined;
   const aberto =
     agora && faixaHoje?.abre !== undefined && faixaHoje.fecha !== undefined && agora.minutos >= faixaHoje.abre && agora.minutos < faixaHoje.fecha;
 
@@ -56,7 +60,7 @@ export function StatusAgora({ className = "" }: { className?: string }) {
       } ${className}`}
     >
       <span aria-hidden className={`relative size-2 rounded-full ${aberto ? "ponto-aberto bg-[#00a86b]" : "bg-[#d92d20]"}`} />
-      {aberto ? `Aberto agora · fecha às ${horaTexto(faixaHoje!.fecha!)}` : `Fechado agora · ${proximaAbertura(agora.dia, agora.minutos)}`}
+      {aberto ? `Aberto agora · fecha às ${horaTexto(faixaHoje!.fecha!)}` : `Fechado agora · ${proximaAbertura(agora.dia, agora.minutos, tabela)}`}
     </p>
   );
 }
@@ -68,8 +72,9 @@ export function StatusAgora({ className = "" }: { className?: string }) {
 export function QuadroHorarios() {
   const minuto = useSyncExternalStore(assinar, minutoAtual, noServidor);
   const agora = minuto ? emBrasilia(minuto) : null;
+  const tabela = tabelaEm(minuto);
 
-  const faixaHoje = agora ? faixaDoDia(agora.dia) : undefined;
+  const faixaHoje = agora ? faixaDoDia(agora.dia, tabela) : undefined;
   const aberto =
     agora && faixaHoje?.abre !== undefined && faixaHoje.fecha !== undefined && agora.minutos >= faixaHoje.abre && agora.minutos < faixaHoje.fecha;
 
@@ -77,7 +82,7 @@ export function QuadroHorarios() {
   if (agora) {
     status = aberto
       ? `Aberto agora · fecha às ${horaTexto(faixaHoje!.fecha!)}`
-      : `Fechado agora · ${proximaAbertura(agora.dia, agora.minutos)}`;
+      : `Fechado agora · ${proximaAbertura(agora.dia, agora.minutos, tabela)}`;
   }
 
   return (
@@ -98,7 +103,7 @@ export function QuadroHorarios() {
       <table className="mt-3 w-full border-separate border-spacing-0 text-body">
         <caption className="sr-only">Horário de funcionamento da loja</caption>
         <tbody>
-          {funcionamento.map((f) => {
+          {tabela.map((f) => {
             const hoje = agora !== null && f.dias.includes(agora.dia);
             return (
               <tr key={f.rotulo}>

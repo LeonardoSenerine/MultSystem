@@ -258,8 +258,8 @@ export default function PoliticaDevolucaoPage() {
       <h3>Horário de atendimento</h3>
       <ul>
         <li>Segunda a sexta: 8h às 17h30.</li>
-        <li>Sábado: 9h às 12h.</li>
-        <li>Domingo: fechado.</li>
+        <li>Sábado: fechado a partir de 14/12/2026 (até 12/12/2026, das 9h às 12h).</li>
+        <li>Domingo e feriados: fechado.</li>
       </ul>
 
       <p>
