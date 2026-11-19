@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Check, CircleCheck, LoaderCircle } from "lucide-react";
 import { useId, useState, type FormEvent } from "react";
 import { Campo, ariaCampo, classeCampo, mascararTelefone } from "@/components/forms/campos";
+import { Seletor } from "@/components/forms/Seletor";
 import { evento } from "@/lib/eventos";
 import { useHidratado } from "@/lib/loja-local";
 import { guardarInscricao, useInscricao } from "@/lib/promocoes";
@@ -87,8 +88,6 @@ export function FormularioPromocoes({ origem, interesses }: { origem: string; in
     );
   }
 
-  const alternar = (slug: string) => setEscolhidos((l) => (l.includes(slug) ? l.filter((s) => s !== slug) : [...l, slug]));
-
   return (
     <form onSubmit={enviar} noValidate className="grid gap-4 text-ink">
       <fieldset>
@@ -135,28 +134,15 @@ export function FormularioPromocoes({ origem, interesses }: { origem: string; in
         />
       </Campo>
 
-      <fieldset>
-        <legend className="mb-2 flex w-full items-baseline justify-between text-small font-semibold text-ink">
-          O que te interessa?
-          <span className="text-[12px] leading-4 font-medium text-muted">opcional</span>
-        </legend>
-        <ul className="flex flex-wrap gap-2">
-          {interesses.map((i) => {
-            const marcado = escolhidos.includes(i.slug);
-            return (
-              <li key={i.slug}>
-                <label className="cursor-pointer">
-                  <input type="checkbox" checked={marcado} onChange={() => alternar(i.slug)} className="peer sr-only" />
-                  <span className="inline-flex min-h-11 items-center gap-1.5 rounded-full border-[1.5px] border-[#cfd8ec] bg-white px-3.5 text-[13px] font-semibold text-ink transition-[background-color,border-color,color,transform] duration-200 select-none hover:border-brand active:scale-95 peer-checked:border-brand peer-checked:bg-brand peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
-                    {marcado && <Check aria-hidden className="size-3.5" strokeWidth={3} />}
-                    {i.nome}
-                  </span>
-                </label>
-              </li>
-            );
-          })}
-        </ul>
-      </fieldset>
+      <Seletor
+        rotulo="O que te interessa?"
+        extra="opcional"
+        multiplo
+        vazio="Escolha os assuntos"
+        opcoes={interesses.map((i) => ({ valor: i.slug, rotulo: i.nome }))}
+        valor={escolhidos}
+        aoMudar={setEscolhidos}
+      />
 
       <div>
         <label className="flex cursor-pointer items-start gap-3">

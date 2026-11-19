@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useEffect, useId, useRef, useState, type FormEvent } from "react";
 import { WhatsAppIcon } from "@/components/icones-marca";
 import { Campo, ariaCampo, classeCampo, mascararTelefone } from "@/components/forms/campos";
+import { Seletor } from "@/components/forms/Seletor";
 import { itensDoCarrinho, textoDoCarrinho } from "@/lib/carrinho";
 import { evento } from "@/lib/eventos";
 import { listaPorId } from "@/lib/listas";
@@ -218,36 +219,28 @@ export function OrcamentoForm({
         </Campo>
       </div>
 
-      {/* Tipo de orçamento: botões de escolha, mais rápidos de usar do que uma lista suspensa. */}
+      {/* Tipo de orçamento: um botão que abre a lista e mostra só o tipo escolhido (no lugar de uma fileira de botões). */}
       {!tipoFixo && (
-      <fieldset aria-describedby={erros.tipo ? `${id}-tipo-erro` : undefined}>
-        <legend className="mb-2 text-small font-semibold text-ink">Tipo de orçamento</legend>
-        <div className="flex flex-wrap gap-2">
-          {tiposOrcamento.map((t) => (
-            <label key={t.valor} className="cursor-pointer">
-              <input
-                type="radio"
-                name="tipo"
-                value={t.valor}
-                checked={tipo === t.valor}
-                onChange={() => {
-                  setTipo(t.valor);
-                  setErros((e) => ({ ...e, tipo: undefined }));
-                }}
-                className="peer sr-only"
-              />
-              <span className="inline-flex min-h-11 items-center rounded-full border-[1.5px] border-[#cfd8ec] bg-white px-4 text-[14px] font-semibold text-ink transition-[background-color,border-color,color,transform] duration-200 select-none hover:border-brand hover:text-brand active:scale-[0.97] peer-checked:border-brand peer-checked:bg-brand peer-checked:text-white peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand">
-                {t.rotulo}
-              </span>
-            </label>
-          ))}
+        <div>
+          <Seletor
+            rotulo="Tipo de orçamento"
+            nome="tipo"
+            vazio="Escolha o tipo de orçamento"
+            opcoes={tiposOrcamento.map((t) => ({ valor: t.valor, rotulo: t.rotulo }))}
+            valor={tipo ? [tipo] : []}
+            aoMudar={([v]) => {
+              if (v && ehTipo(v)) setTipo(v);
+              setErros((e) => ({ ...e, tipo: undefined }));
+            }}
+            erro={erros.tipo}
+            idErro={`${id}-tipo-erro`}
+          />
+          {erros.tipo && (
+            <p id={`${id}-tipo-erro`} role="alert" className="erro-campo mt-1.5 text-small text-red-700">
+              {erros.tipo}
+            </p>
+          )}
         </div>
-        {erros.tipo && (
-          <p id={`${id}-tipo-erro`} role="alert" className="erro-campo mt-1.5 text-small text-red-700">
-            {erros.tipo}
-          </p>
-        )}
-      </fieldset>
       )}
 
       <Campo id={`${id}-mensagem`} rotulo="O que você precisa?" erro={erros.mensagem}>
