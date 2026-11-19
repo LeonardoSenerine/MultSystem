@@ -6,10 +6,10 @@ import { getContato } from "@/lib/dados";
 import { mensagens, whatsappLink } from "@/lib/whatsapp";
 
 const passos = [
-  { titulo: "Fale com a gente", detalhe: "Pelo WhatsApp ou direto no balcão da loja." },
+  { titulo: "Fale com a Total Tech", detalhe: "Pelo WhatsApp da Total Tech ou no balcão dela, dentro da loja." },
   { titulo: "Avaliação em 24h", detalhe: "A avaliação do técnico é paga. Depois dela, ele manda o orçamento do conserto." },
   { titulo: "Você aprova", detalhe: "O conserto só começa com o seu ok." },
-  { titulo: "Retire com garantia", detalhe: "O serviço sai daqui com 90 dias de garantia." },
+  { titulo: "Retire com garantia", detalhe: "O serviço da Total Tech sai com 90 dias de garantia." },
 ];
 
 export function Assistencia() {
@@ -39,7 +39,8 @@ export function Assistencia() {
             Seu equipamento parou? A Total Tech resolve.
           </h2>
           <p className="mt-4 max-w-[46ch] text-body-lg text-white/85">
-            A assistência parceira funciona dentro da nossa loja. Você traz o notebook ou o PC, o técnico faz a avaliação (que é paga) e envia o orçamento do conserto.
+            A Total Tech é uma empresa parceira, separada da Multsystems, que atende dentro da nossa loja. É ela quem faz a
+            avaliação (que é paga), o orçamento e o conserto do seu notebook ou PC.
           </p>
 
           {/* Passos numerados, todos com a mesma estrutura: número e título na mesma linha de base. */}

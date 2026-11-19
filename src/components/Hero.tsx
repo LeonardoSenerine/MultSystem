@@ -48,13 +48,7 @@ export function Hero() {
 
       <div className="container-site relative grid gap-y-8 pt-8 pb-10 lg:grid-cols-[minmax(0,1fr)_minmax(0,580px)] lg:gap-x-14 lg:gap-y-8 lg:py-12">
         <div className="hero-texto lg:col-start-1 lg:row-start-1 lg:self-end">
-          <p className="inline-flex flex-wrap items-center gap-x-2 rounded-btn border border-white/25 px-3 py-1.5 text-small text-white">
-            <span>Desde 1995 em Itatiba</span>
-            <span aria-hidden className="text-white/40">·</span>
-            <span>Especialistas em B2B</span>
-          </p>
-
-          <h1 id="hero-titulo" className="mt-5 text-display text-balance lg:mt-6">
+          <h1 id="hero-titulo" className="text-display text-balance">
             Informática para sua empresa <span className="block text-brand-light">e para sua casa</span>
           </h1>
 

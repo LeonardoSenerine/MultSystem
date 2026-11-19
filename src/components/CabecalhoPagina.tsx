@@ -65,9 +65,7 @@ export function CabecalhoPagina({
         <Migalhas itens={[{ nome: "Início", href: "/" }, { nome: titulo }]} escuro />
 
         <div className="hero-texto mt-8 max-w-[640px] lg:mt-14">
-          {/* Fio curto azul-claro acima do título, no lugar do antigo selo. */}
-          <span aria-hidden className="block h-1 w-12 rounded-full bg-brand-light" />
-          <h1 className="mt-5 text-display text-balance">{titulo}</h1>
+          <h1 className="text-display text-balance">{titulo}</h1>
           {texto && <p className="mt-4 max-w-[52ch] text-body-lg text-white/85">{texto}</p>}
 
           {pontos && pontos.length > 0 && (

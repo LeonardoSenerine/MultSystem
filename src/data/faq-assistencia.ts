@@ -8,6 +8,11 @@ import type { Pergunta } from "@/types";
 
 export const perguntasAssistencia: Pergunta[] = [
   {
+    pergunta: "Quem faz o conserto, a Multsystems ou a Total Tech?",
+    resposta:
+      "A Total Tech. Ela é uma empresa parceira, separada da Multsystems, que atende dentro da nossa loja. A avaliação, o orçamento, o conserto e a garantia são feitos pela Total Tech. A Multsystems vende os produtos e não faz serviço técnico.",
+  },
+  {
     pergunta: "A avaliação do técnico é paga?",
     resposta:
       "Sim, a avaliação técnica do equipamento é paga. O técnico informa o valor antes de começar. Depois dela, ele explica o que o equipamento tem e quanto fica o conserto, e o serviço só começa se você aprovar.",
@@ -25,13 +30,13 @@ export const perguntasAssistencia: Pergunta[] = [
     exemplo: true,
   },
   {
-    pergunta: "Quais equipamentos vocês atendem?",
+    pergunta: "Quais equipamentos a Total Tech atende?",
     resposta:
-      "Notebooks e computadores de mesa: troca de tela e teclado, upgrade de memória e SSD, limpeza, formatação, reparo de placa e montagem. Também fazemos a instalação de nobreaks.",
+      "Notebooks e computadores de mesa: troca de tela e teclado, upgrade de memória e SSD, limpeza, formatação, reparo de placa e montagem. A Total Tech também faz a instalação de nobreaks.",
     exemplo: true,
   },
   {
-    pergunta: "Vocês atendem na empresa ou em casa?",
+    pergunta: "A Total Tech atende na empresa ou em casa?",
     resposta:
       "Sim. Além do atendimento na loja, a Total Tech faz suporte remoto e visita técnica. Conte o caso no formulário ou no WhatsApp para combinar.",
     exemplo: true,

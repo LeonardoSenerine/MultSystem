@@ -21,10 +21,10 @@ export function Migalhas({ itens, escuro = false }: { itens: Migalha[]; escuro?:
   return (
     <nav aria-label="Você está em">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(dados).replace(/</g, "\\u003c") }} />
-      <ol className={`flex flex-wrap items-center gap-x-1 text-[13px] leading-5 ${escuro ? "text-white/75" : "text-muted"}`}>
+      <ol className={`flex flex-wrap items-center gap-x-1.5 text-[15px] leading-6 lg:text-base ${escuro ? "text-white/80" : "text-muted"}`}>
         {itens.map((item, i) => (
-          <li key={item.nome} className="flex items-center gap-1">
-            {i > 0 && <ChevronRight aria-hidden className={`size-3.5 ${escuro ? "text-white/45" : "text-muted/70"}`} />}
+          <li key={item.nome} className="flex items-center gap-1.5">
+            {i > 0 && <ChevronRight aria-hidden className={`size-4 ${escuro ? "text-white/50" : "text-muted/70"}`} />}
             {item.href ? (
               <Link
                 href={item.href}
@@ -33,7 +33,7 @@ export function Migalhas({ itens, escuro = false }: { itens: Migalha[]; escuro?:
                 {item.nome}
               </Link>
             ) : (
-              <span aria-current="page" className={escuro ? "text-white" : "text-ink"}>
+              <span aria-current="page" className={`font-semibold ${escuro ? "text-white" : "text-ink"}`}>
                 {item.nome}
               </span>
             )}
