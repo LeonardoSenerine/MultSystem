@@ -29,12 +29,6 @@ export function FundoOndas() {
         <Canto />
       </div>
 
-      {/* Só no celular/tablet, onde a foto cobre o canto de cima: uma onda a mais ao lado do texto, surgindo
-          num degradê (o topo reto da peça fica invisível). */}
-      <div className="absolute top-[24%] right-0 w-[88%] [mask-image:linear-gradient(to_bottom,transparent,#000_45%)] sm:w-[60%] lg:hidden">
-        <Canto />
-      </div>
-
       {/* Embaixo, invertida: a mesma peça girada 180°, saindo do canto de baixo à esquerda. */}
       <div className="absolute bottom-0 left-0 w-[96%] max-w-[860px] sm:w-[70%] lg:w-[52%]">
         <Canto className="rotate-180" />
