@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ArrowUpRight } from "lucide-react";
 import { CabecalhoPagina } from "@/components/CabecalhoPagina";
 import { FormularioContato } from "@/components/contato/FormularioContato";
+import { FundoOndas } from "@/components/FundoOndas";
 import { PerguntasFrequentes } from "@/components/PerguntasFrequentes";
 import { Reveal } from "@/components/Reveal";
 import { VisiteLoja } from "@/components/VisiteLoja";
@@ -37,7 +38,9 @@ export default function ContatoPage() {
         pontos={["Resposta em horário comercial", "WhatsApp, telefone e e-mail", "Loja no Centro de Itatiba"]}
       />
 
-      <section aria-labelledby="canais-titulo" className="section-y">
+      {/* Mesmo fundo de ondas da home, da assistência e de empresas. */}
+      <section aria-labelledby="canais-titulo" className="relative isolate overflow-hidden section-y">
+        <FundoOndas />
         <div className="container-site grid gap-10 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] lg:gap-16">
           <div>
             <Reveal>
