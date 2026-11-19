@@ -9,7 +9,12 @@ export type OpcaoSeletor = { valor: string; rotulo: string };
 /**
  * Campo que abre uma lista de opções e guarda só um resumo da escolha dentro do botão (no lugar de mostrar
  * todas as opções de uma vez). `multiplo` deixa marcar várias; sem ele, escolher uma já fecha a lista.
- * Usa radios/checkboxes de verdade dentro da lista, então teclado (Tab, setas, espaço) e leitor de tela funcionam.
+ *
+ * A lista abre DENTRO do fluxo da página (empurra os campos de baixo), e não flutuando por cima: assim ela
+ * nunca sai do cartão do formulário nem cobre a seção seguinte, em qualquer largura de tela.
+ * Ao abrir, as opções já escolhidas sobem para o topo (com fundo destacado e uma linha separando das outras).
+ * A ordem é fixada na hora de abrir, para os itens não pularem de lugar debaixo do dedo enquanto a pessoa marca.
+ * Usa radios/checkboxes de verdade, então teclado (Tab, setas, espaço) e leitor de tela funcionam.
  */
 export function Seletor({
   rotulo,
@@ -39,10 +44,13 @@ export function Seletor({
 }) {
   const id = useId();
   const [aberto, setAberto] = useState(false);
+  // Ordem da lista, montada ao abrir: escolhidas primeiro (na ordem original), depois as demais.
+  const [ordem, setOrdem] = useState<OpcaoSeletor[]>(opcoes);
+  const [qtdNoTopo, setQtdNoTopo] = useState(0);
   const raiz = useRef<HTMLDivElement>(null);
   const botao = useRef<HTMLButtonElement>(null);
 
-  // Fecha ao clicar/tocar fora, com Esc (devolvendo o foco ao botão) ou quando o foco sai do campo.
+  // Fecha ao clicar/tocar fora ou com Esc (devolvendo o foco ao botão).
   useEffect(() => {
     if (!aberto) return;
     const fora = (e: PointerEvent) => {
@@ -61,9 +69,17 @@ export function Seletor({
     };
   }, [aberto]);
 
+  const abrirOuFechar = () => {
+    if (!aberto) {
+      const escolhidas = opcoes.filter((o) => valor.includes(o.valor));
+      setOrdem([...escolhidas, ...opcoes.filter((o) => !valor.includes(o.valor))]);
+      setQtdNoTopo(escolhidas.length);
+    }
+    setAberto((v) => !v);
+  };
+
   const escolhidas = opcoes.filter((o) => valor.includes(o.valor));
-  const resumo =
-    escolhidas.length === 0 ? null : multiplo && escolhidas.length > 1 ? `${escolhidas.length} assuntos escolhidos` : escolhidas[0].rotulo;
+  const resumo = escolhidas.length === 0 ? null : escolhidas.map((o) => o.rotulo).join(", ");
 
   const alternar = (v: string) => {
     if (!multiplo) {
@@ -78,31 +94,37 @@ export function Seletor({
   return (
     <div
       ref={raiz}
-      className="relative"
+      className="min-w-0"
       onBlur={(e) => {
         // Tab para fora do campo fecha a lista (relatedTarget nulo = clique, que o "pointerdown" já trata).
         if (e.relatedTarget && !raiz.current?.contains(e.relatedTarget as Node)) setAberto(false);
       }}
     >
-      <div className="mb-2 flex w-full items-baseline justify-between text-small font-semibold text-ink">
+      <div className="mb-2 flex w-full items-baseline justify-between gap-3 text-small font-semibold text-ink">
         <span id={`${id}-rotulo`}>{rotulo}</span>
-        {extra && <span className="text-[12px] leading-4 font-medium text-muted">{extra}</span>}
+        {extra && <span className="shrink-0 text-[12px] leading-4 font-medium text-muted">{extra}</span>}
       </div>
 
       <button
         ref={botao}
         type="button"
         name={nome}
-        onClick={() => setAberto((v) => !v)}
+        onClick={abrirOuFechar}
         aria-expanded={aberto}
         aria-controls={`${id}-lista`}
         aria-labelledby={`${id}-rotulo ${id}-valor`}
         aria-describedby={erro ? idErro : undefined}
-        className={`${classeCampo} flex h-12 cursor-pointer items-center justify-between gap-3 text-left ${erro ? "border-red-600 bg-red-50/40" : ""}`}
+        className={`${classeCampo} flex h-12 min-w-0 cursor-pointer items-center gap-2 text-left ${erro ? "border-red-600 bg-red-50/40" : ""} ${aberto ? "border-brand" : ""}`}
       >
-        <span id={`${id}-valor`} className={`min-w-0 truncate ${resumo ? "font-semibold text-ink" : "text-[#7d89a6]"}`}>
+        <span id={`${id}-valor`} className={`min-w-0 flex-1 truncate ${resumo ? "font-semibold text-ink" : "text-[#7d89a6]"}`}>
           {resumo ?? vazio}
         </span>
+        {multiplo && escolhidas.length > 1 && (
+          <span className="grid h-6 min-w-6 shrink-0 place-items-center rounded-full bg-brand px-1.5 text-[12px] leading-none font-bold text-white tabular-nums">
+            {escolhidas.length}
+            <span className="sr-only"> escolhidos</span>
+          </span>
+        )}
         <ChevronDown aria-hidden className={`size-5 shrink-0 text-muted transition-transform duration-200 ${aberto ? "rotate-180" : ""}`} />
       </button>
 
@@ -111,14 +133,16 @@ export function Seletor({
           id={`${id}-lista`}
           role="group"
           aria-labelledby={`${id}-rotulo`}
-          className="absolute inset-x-0 top-full z-30 mt-1.5 overflow-hidden rounded-btn border border-[#cfd8ec] bg-white text-ink shadow-[0_12px_32px_rgb(28_47_92/0.18)]"
+          className="mt-1.5 overflow-hidden rounded-btn border border-[#cfd8ec] bg-white text-ink shadow-[0_6px_18px_rgb(28_47_92/0.10)]"
         >
           <ul className="max-h-[17.5rem] overflow-y-auto overscroll-contain p-1.5">
-            {opcoes.map((o) => {
+            {ordem.map((o, i) => {
               const marcado = valor.includes(o.valor);
+              // Linha fina entre o grupo das escolhidas (no topo) e o resto da lista.
+              const fimDoTopo = qtdNoTopo > 0 && i === qtdNoTopo - 1 && qtdNoTopo < ordem.length;
               return (
-                <li key={o.valor}>
-                  <label className="cursor-pointer">
+                <li key={o.valor} className={fimDoTopo ? "mb-1.5 border-b border-line pb-1.5" : "[&+li]:mt-0.5"}>
+                  <label className="block cursor-pointer">
                     <input
                       type={multiplo ? "checkbox" : "radio"}
                       name={multiplo ? undefined : `${id}-opcao`}
@@ -126,9 +150,23 @@ export function Seletor({
                       onChange={() => alternar(o.valor)}
                       className="peer sr-only"
                     />
-                    <span className="flex min-h-11 items-center justify-between gap-3 rounded-[10px] px-3 text-[14px] font-semibold select-none hover:bg-tint peer-checked:text-brand peer-focus-visible:outline-2 peer-focus-visible:-outline-offset-2 peer-focus-visible:outline-brand">
-                      {o.rotulo}
-                      {marcado && <Check aria-hidden className="size-4 shrink-0 text-brand" strokeWidth={3} />}
+                    <span
+                      className={`flex min-h-11 items-center gap-3 rounded-[10px] px-3 py-2 text-[14px] leading-5 select-none peer-focus-visible:outline-2 peer-focus-visible:-outline-offset-2 peer-focus-visible:outline-brand ${
+                        marcado ? "bg-brand/[0.08] font-bold text-brand" : "font-medium text-ink hover:bg-tint"
+                      }`}
+                    >
+                      {multiplo && (
+                        <span
+                          aria-hidden
+                          className={`grid size-5 shrink-0 place-items-center rounded-[6px] border-[1.5px] ${
+                            marcado ? "border-brand bg-brand text-white" : "border-[#b9c3dc] bg-white"
+                          }`}
+                        >
+                          {marcado && <Check className="size-3.5" strokeWidth={3} />}
+                        </span>
+                      )}
+                      <span className="min-w-0 flex-1">{o.rotulo}</span>
+                      {!multiplo && marcado && <Check aria-hidden className="size-4 shrink-0" strokeWidth={3} />}
                     </span>
                   </label>
                 </li>
@@ -137,7 +175,7 @@ export function Seletor({
           </ul>
 
           {multiplo && (
-            <div className="flex items-center justify-between gap-3 border-t border-line bg-white px-3 py-1.5">
+            <div className="flex items-center justify-between gap-3 border-t border-line bg-white px-3 py-1">
               <button
                 type="button"
                 onClick={() => aoMudar([])}
